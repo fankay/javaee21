@@ -1,6 +1,7 @@
 package com.kaishengit.test;
 
 import com.kaishengit.entity.User;
+import com.kaishengit.exception.DataAccessException;
 import com.kaishengit.util.ConnectionManager;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
@@ -12,14 +13,19 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.junit.Assert;
 import org.junit.Test;
 
-import javax.management.Query;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class DbUtilsTestCase {
+
+
+    @Test
+    public void testConnection() {
+        ConnectionManager.getConnection();
+
+    }
 
     @Test
     public void testSave() {
@@ -28,7 +34,7 @@ public class DbUtilsTestCase {
         try {
             queryRunner.update(ConnectionManager.getConnection(),sql,"Jack","123123","USA");
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DataAccessException();
         }
     }
 
@@ -42,11 +48,7 @@ public class DbUtilsTestCase {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            ConnectionManager.closeConnection(connection);
         }
     }
 
@@ -64,11 +66,7 @@ public class DbUtilsTestCase {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            ConnectionManager.closeConnection(connection);
         }
 
 
@@ -90,11 +88,7 @@ public class DbUtilsTestCase {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            ConnectionManager.closeConnection(connection);
         }
     }
 
@@ -119,11 +113,7 @@ public class DbUtilsTestCase {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            ConnectionManager.closeConnection(connection);
         }
 
 
@@ -152,11 +142,7 @@ public class DbUtilsTestCase {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            ConnectionManager.closeConnection(connection);
         }
     }
 
@@ -174,11 +160,7 @@ public class DbUtilsTestCase {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            ConnectionManager.closeConnection(connection);
         }
 
     }
@@ -196,11 +178,7 @@ public class DbUtilsTestCase {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            ConnectionManager.closeConnection(connection);
         }
 
     }
