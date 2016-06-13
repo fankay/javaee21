@@ -7,11 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/main")
-public class HomeServlet extends HttpServlet {
+@WebServlet("/pay/suc")
+public class PaySuccessServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("Hello,Servlet!");
+        req.getRequestDispatcher("/WEB-INF/views/paysuc.jsp").forward(req,resp);
     }
 }
