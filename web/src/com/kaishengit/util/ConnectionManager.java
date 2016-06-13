@@ -3,6 +3,7 @@ package com.kaishengit.util;
 import com.kaishengit.exception.DataAccessException;
 import org.apache.commons.dbcp2.BasicDataSource;
 
+import javax.sql.DataSource;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -34,6 +35,10 @@ public class ConnectionManager {
         dataSource.setMaxWaitMillis(Integer.parseInt(prop.getProperty("jdbc.maxwait","5000")));
         dataSource.setMaxIdle(Integer.parseInt(prop.getProperty("jdbc.maxidle","10")));
         dataSource.setMinIdle(Integer.parseInt(prop.getProperty("jdbc.minidle","5")));
+    }
+
+    public static DataSource getDataSource() {
+        return dataSource;
     }
 
 

@@ -12,26 +12,20 @@ import java.sql.SQLException;
 public class DbHelp {
 
     public static void update(String sql,Object... params) {
-        QueryRunner queryRunner = new QueryRunner();
-        Connection connection = ConnectionManager.getConnection();
+        QueryRunner queryRunner = new QueryRunner(ConnectionManager.getDataSource());
         try {
-            queryRunner.update(connection,sql,params);
+            queryRunner.update(sql,params);
         } catch (SQLException e) {
             throw new DataAccessException("执行:" + sql + "异常",e);
-        } finally {
-            ConnectionManager.closeConnection(connection);
         }
     }
 
     public static <T> T query(String sql, ResultSetHandler<T> handler,Object... params) {
-        QueryRunner queryRunner = new QueryRunner();
-        Connection connection = ConnectionManager.getConnection();
+        QueryRunner queryRunner = new QueryRunner(ConnectionManager.getDataSource());
         try {
-            return queryRunner.query(connection,sql,handler,params);
+            return queryRunner.query(sql,handler,params);
         } catch (SQLException e) {
             throw new DataAccessException("执行:" + sql + "异常",e);
-        } finally {
-            ConnectionManager.closeConnection(connection);
         }
     }
 
