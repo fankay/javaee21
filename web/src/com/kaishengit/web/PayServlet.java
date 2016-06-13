@@ -51,6 +51,7 @@ public class PayServlet extends HttpServlet {
             //请求转发的形式去了结果页面
             req.getRequestDispatcher("/WEB-INF/views/paysuc.jsp").forward(req,resp);
         } else {
+            logger.warn("表单重复提交");
             req.getRequestDispatcher("/WEB-INF/views/payerror.jsp").forward(req,resp);
         }
 
