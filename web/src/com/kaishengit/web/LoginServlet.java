@@ -1,5 +1,7 @@
 package com.kaishengit.web;
 
+import com.kaishengit.entity.User;
+import com.kaishengit.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +35,19 @@ public class LoginServlet extends HttpServlet {
             String username = req.getParameter("username");
             String password = req.getParameter("password");
 
-            logger.debug("{}登录成功",username);
+            //根据账号和密码去验证是否成功
+            UserService userService = new UserService();
+            User user = userService.login(username,password);
+
+            if(user == null) {
+                resp.sendRedirect("/login?code=1002");
+            } else {
+                logger.debug("显示home页面");
+            }
+
+
+
+
 
         } else {
             //验证输入错误

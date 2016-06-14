@@ -4,7 +4,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Test;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 public class CodecTestCase {
 
@@ -18,7 +17,8 @@ public class CodecTestCase {
         //4297f44b13955235245b2497399d7a93
         String password = "111111";
         String salt = "QQQKJHKUYTUY^%&^%&^%^#%$#)*)*&*%^#%"; //盐
-        password = DigestUtils.md5Hex(password+salt);
+        //password = DigestUtils.md5Hex(password+salt);
+        password = DigestUtils.md5Hex(password);
 
         System.out.println(password);
     }

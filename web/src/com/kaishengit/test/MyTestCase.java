@@ -1,17 +1,18 @@
 package com.kaishengit.test;
 
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.patchca.color.SingleColorFactory;
 import org.patchca.filter.predefined.CurvesRippleFilterFactory;
 import org.patchca.font.FontFactory;
-import org.patchca.font.RandomFontFactory;
 import org.patchca.service.ConfigurableCaptchaService;
 import org.patchca.utils.encoder.EncoderHelper;
 import org.patchca.word.RandomWordFactory;
 
 import java.awt.*;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 public class MyTestCase {
@@ -51,5 +52,46 @@ public class MyTestCase {
         outputStream.close();
 
     }
+
+
+    @Test
+    public void testDate() {
+        Date date = new Date(); //now
+        long timeStamp = date.getTime(); // from 1970
+        System.out.println(timeStamp);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String now = simpleDateFormat.format(date);
+        System.out.println(now);
+
+    }
+
+    @Test
+    public void testJodaTime() {
+        DateTime dateTime = DateTime.now();
+        dateTime = dateTime.plusDays(20);
+        dateTime = dateTime.plusHours(28);
+        String now = dateTime.toString("yyyy-MM-dd HH:mm:ss");
+        System.out.println(now);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

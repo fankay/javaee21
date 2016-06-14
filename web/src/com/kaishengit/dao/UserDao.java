@@ -24,6 +24,11 @@ public class UserDao {
         return DbHelp.query(sql,new BeanHandler<>(User.class),id);
     }
 
+    public User findByUsername(String username) {
+        String sql = "select * from t_user where username = ?";
+        return DbHelp.query(sql,new BeanHandler<>(User.class),username);
+    }
+
     public List<User> findAll() {
         String sql = "select * from t_user";
         return DbHelp.query(sql,new BeanListHandler<>(User.class));
