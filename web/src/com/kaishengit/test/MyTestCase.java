@@ -75,6 +75,14 @@ public class MyTestCase {
         System.out.println(now);
     }
 
+    @Test
+    public void testSubString() {
+        String headerValue = "form-data; name=\"doc\"; filename=\"github-roam.pdf\"";
+        headerValue = headerValue.substring(headerValue.indexOf("filename=\""));
+        headerValue = headerValue.substring(headerValue.indexOf("\"")+1,headerValue.length()-1);
+        System.out.println(headerValue);
+    }
+
 
 
 
