@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.UUID;
 
 public class DocumentService {
@@ -68,4 +69,11 @@ public class DocumentService {
         return fileName;
     }
 
+    public List<Document> findAllDocument() {
+        return documentDao.findAll();
+    }
+
+    public Document findDocumentByMd5(String md5) {
+        return documentDao.findByMd5(md5);
+    }
 }

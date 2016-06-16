@@ -66,4 +66,18 @@ public class Document {
     public void setDisplaysize(String displaysize) {
         this.displaysize = displaysize;
     }
+
+    public boolean isPreview() {
+        if(getFilename() == null) {
+            return false;
+        }
+        if(getFilename().endsWith(".jpg") || getFilename().endsWith(".png")
+                || getFilename().endsWith(".gif")
+                || getFilename().endsWith(".jpeg")
+                || getFilename().endsWith(".pdf")
+                || getFilename().endsWith(".bmp")) {
+            return true;
+        }
+        return false;
+    }
 }
