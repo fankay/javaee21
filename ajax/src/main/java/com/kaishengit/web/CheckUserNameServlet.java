@@ -18,7 +18,16 @@ public class CheckUserNameServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //服务器端处理缓存
+        resp.setContentType("text/html;charset=UTF-8");
+        //下面的三个响应头告诉浏览器不要缓存响应结果
+        resp.addHeader("pragma","no-cache");
+        resp.addHeader("cache-control","no-cache");
+        resp.addHeader("expires","0");
+
+
         String username = req.getParameter("username");
+        username = new String(username.getBytes("ISO8859-1"),"UTF-8");
 
         logger.debug("username:{}",username);
 

@@ -22,14 +22,15 @@
             return xmlHttp;
         }
 
-        document.querySelector("#username").onchange = function(){
+        document.querySelector("#username").onblur = function(){
 
             var username = this.value;
 
             //1. 创建Ajax引擎
             var xmlHttp = createXmlHttp();
             //2. 设置请求方式和URL
-            xmlHttp.open("get","/checkusername?username="+username);
+            //xmlHttp.open("get","/checkusername?username="+encodeURIComponent(username)+"&_="+new Date().getTime());
+            xmlHttp.open("get","/checkusername?username="+encodeURIComponent(username));
             //3. 设置回调函数
             xmlHttp.onreadystatechange = function(){
                 //3.1 获取请求状态码[1,2,3,4]
