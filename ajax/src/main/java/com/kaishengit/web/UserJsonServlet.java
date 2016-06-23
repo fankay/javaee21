@@ -18,6 +18,13 @@ public class UserJsonServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         List<User> userList = new ArrayList<>();
         userList.add(new User(1,"tom","usa",78.5F));
         userList.add(new User(25,"lily","中国",88F));
