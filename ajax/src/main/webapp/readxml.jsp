@@ -31,6 +31,13 @@
         }
 
         function createUserDiv(id,username,address) {
+            /*
+            <div>
+                <h4>name <small>id</small></h4>
+                <p>address</p>
+            </div>
+             */
+
             var div = document.createElement("div");
             var h4 = document.createElement("h4");
             var small = document.createElement("samll");
