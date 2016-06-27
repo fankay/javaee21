@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaishengit.mapper.UserMapper">
+
+    <!--
+        public User findById(Integer id)
+
+        int integer -> Integer
+        _int -> int
+
+        id: 类似方法名字
+        parameterType: 方法传入参数的类型
+        resultType：方法的返回类型(需要写pojo的完全限定名=包名+类名)
+    -->
+    <select id="findById" parameterType="int" resultType="com.kaishengit.pojo.User">
+        SELECT id, username, password, email, avatar, createtime, loginip, logintime, state
+        FROM t_user WHERE id = #{id}
+    </select>
+
+    <!--
+        save(User user)
+    -->
+    <insert id="save" parameterType="com.kaishengit.pojo.User">
+        INSERT INTO t_user(username, password, email, avatar, createtime, loginip, logintime, state)
+        VALUES (#{username},#{password},#{email},#{avatar},#{createtime},#{loginip},#{logintime},#{state})
+    </insert>
+
+    <update id="update" parameterType="User">
+        UPDATE t_user SET password = #{password},email = #{email},avatar=#{avatar},
+        loginip=#{loginip},logintime=#{logintime},state=#{state}
+        where id = #{id}
+    </update>
+
+    <delete id="del" parameterType="int">
+        DELETE FROM t_user WHERE id = #{id}
+    </delete>
+
+    <select id="findAll" resultType="User">
+        SELECT * FROM t_user
+    </select>
+
+
+</mapper>
+
