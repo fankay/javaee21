@@ -95,6 +95,19 @@
       <version>2.7</version>
     </dependency>
 
+    <!--<dependency>
+      <groupId>org.ehcache</groupId>
+      <artifactId>ehcache</artifactId>
+      <version>3.0.2</version>
+    </dependency>-->
+
+    <dependency>
+      <groupId>net.sf.ehcache</groupId>
+      <artifactId>ehcache-core</artifactId>
+      <version>2.6.5</version>
+    </dependency>
+
+
 
 
   </dependencies>
