@@ -4,6 +4,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kaishengit.mapper.UserMapper">
 
+
+
+
+
+    <select id="findByPage" resultType="User">
+        SELECT * FROM t_user limit ${start},${size}
+    </select>
+
+
+
     <!--
         <where>
         1. 当where中的条件有任意的一个成立，则添加where关键字
@@ -11,17 +21,30 @@
     -->
     <select id="findByQueryParam" parameterType="map" resultType="User">
         SELECT * FROM t_user
-        <where>
+        <trim prefix="where" prefixOverrides="and|or">
             <if test="username != null and username != ''">
                 username = #{username}
             </if>
-            <if test="password != null and password != ''">
+
+            <choose>
+                <when test="password != null and password != ''">
+                    and password = #{password}
+                </when>
+                <when test="email != null and email != ''">
+                    and email = #{email}
+                </when>
+                <!--<otherwise>
+                    and 1 = 1
+                </otherwise>-->
+            </choose>
+
+            <!--<if test="password != null and password != ''">
                 and password = #{password}
             </if>
             <if test="email != null and email != ''">
                 and email = #{email}
-            </if>
-        </where>
+            </if>-->
+        </trim>
     </select>
 
     <select id="findByParams" resultType="User">
@@ -46,10 +69,31 @@
         parameterType: 方法传入参数的类型
         resultType：方法的返回类型(需要写pojo的完全限定名=包名+类名)
     -->
-    <select id="findById" parameterType="int" resultType="com.kaishengit.pojo.User">
-        SELECT id, username, password, email, avatar, createtime, loginip, logintime, state
-        FROM t_user WHERE id = #{id}
+    <select id="findById" parameterType="int" resultType="com.kaishengit.pojo.User" resultMap="userMap">
+        SELECT t_user.id, username, password, email, avatar, createtime, loginip, logintime, state,
+        t_tag.tagname,t_tag.id as 'tagid'
+        FROM t_user
+        INNER JOIN t_tag ON t_user.id = t_tag.userid
+        WHERE t_user.id = #{id}
     </select>
+
+    <resultMap id="userMap" type="com.kaishengit.pojo.User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="email" property="email"/>
+        <result column="avatar" property="avatar"/>
+        <result column="createtime" property="createtime"/>
+        <result column="loginip" property="loginip"/>
+        <result column="logintime" property="logintime"/>
+        <result column="state" property="state"/>
+        <collection property="tagList" ofType="com.kaishengit.pojo.Tag">
+            <id column="tagid" property="id"/>
+            <result column="tagname" property="tagname"/>
+        </collection>
+    </resultMap>
+
+
 
     <!--
         save(User user)
@@ -62,8 +106,15 @@
     </insert>
 
     <update id="update" parameterType="User">
-        UPDATE t_user SET password = #{password},email = #{email},avatar=#{avatar},
-        loginip=#{loginip},logintime=#{logintime},state=#{state}
+        UPDATE t_user
+         <set>
+            password = #{password},
+             email = #{email},
+             avatar=#{avatar},
+             loginip=#{loginip},
+             logintime=#{logintime},
+             state=#{state}
+         </set>
         where id = #{id}
     </update>
 

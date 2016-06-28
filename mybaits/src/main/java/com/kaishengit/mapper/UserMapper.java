@@ -9,6 +9,8 @@ import java.util.Map;
 public interface UserMapper {
 
 
+    List<User> findByPage(@Param("start") String start,@Param("size") String pageSize);
+
     List<User> findByQueryParam(Map<String,Object> queryParam);
 
     User findByParams(@Param("username") String username,@Param("pwd") String password);

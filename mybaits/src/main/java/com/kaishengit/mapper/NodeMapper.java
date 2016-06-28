@@ -10,4 +10,6 @@ public interface NodeMapper {
 
     List<Node> findByIds(List<Integer> idList);
 
+    Node findById(Integer id);
+
 }

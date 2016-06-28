@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaishengit.mapper.TopicMapper">
+
+    <select id="findById" parameterType="int"
+            resultType="com.kaishengit.pojo.Topic" resultMap="topicMap">
+        SELECT t_topic.*,t_user.username,t_user.avatar,t_node.nodename FROM t_topic
+        INNER join t_user on t_topic.userid = t_user.id
+        INNER join t_node on t_topic.nodeid = t_node.id
+        WHERE  t_topic.id = #{id}
+        <!--SELECT t_topic.*,t_user.username as 'user.username',t_user.avatar as 'user.avatar',t_node.nodename as 'node.nodename'
+        FROM t_topic
+        INNER join t_user on t_topic.userid = t_user.id
+        INNER join t_node on t_topic.nodeid = t_node.id
+        WHERE  t_topic.id = #{id}-->
+    </select>
+
+    <resultMap id="topicMap" type="com.kaishengit.pojo.Topic">
+        <id column="id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="text" property="text"/>
+        <result column="createtime" property="createtime"/>
+        <result column="userid" property="userid"/>
+        <result column="nodeid" property="nodeid"/>
+        <result column="viewnum" property="viewnum"/>
+        <result column="favnum" property="favnum"/>
+        <result column="likenum" property="likenum"/>
+        <result column="replynum" property="replynum"/>
+        <result column="replytime" property="replytime"/>
+        <association property="user" javaType="com.kaishengit.pojo.User" column="userid">
+            <id column="userid" property="id"/>
+            <result column="username" property="username"/>
+            <result column="avatar" property="avatar"/>
+        </association>
+        <association property="node" javaType="com.kaishengit.pojo.Node" column="nodeid">
+            <id column="nodeid" property="id"/>
+            <result column="nodename" property="nodename"/>
+        </association>
+    </resultMap>
+
+
+</mapper>

@@ -43,6 +43,7 @@
     <mappers>
         <mapper resource="mapper/UserMapper.xml"/>
         <mapper resource="mapper/NodeMapper.xml"/>
+        <mapper resource="mapper/TopicMapper.xml"/>
     </mappers>
 
 </configuration>

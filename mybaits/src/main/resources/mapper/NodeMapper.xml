@@ -4,7 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kaishengit.mapper.NodeMapper">
 
-    <insert id="batchSave" parameterType="list">
+    <cache/>
+    <!--<cache size="2048" readOnly="false" eviction="FIFO" flushInterval="60000"/>-->
+
+    <!--
+        flushCache:false 执行后不刷新缓存
+    -->
+    <insert id="batchSave" parameterType="list" flushCache="false">
         INSERT  INTO t_node(nodename) VALUES
         <foreach collection="list" item="node" separator=",">
             (#{node.nodename})
@@ -16,6 +22,13 @@
         <foreach collection="list" item="id" separator="," open="(" close=")">
             #{id}
         </foreach>
+    </select>
+
+    <!--
+        userCache：false 该语句不被缓存
+    -->
+    <select id="findById" resultType="com.kaishengit.pojo.Node" useCache="false">
+        SELECT * FROM t_node WHERE id = #{id}
     </select>
 
 
