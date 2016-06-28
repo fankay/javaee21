@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaishengit.mapper.NodeMapper">
+
+    <insert id="batchSave" parameterType="list">
+        INSERT  INTO t_node(nodename) VALUES
+        <foreach collection="list" item="node" separator=",">
+            (#{node.nodename})
+        </foreach>
+    </insert>
+
+    <select id="findByIds" parameterType="list" resultType="com.kaishengit.pojo.Node">
+        SELECT * FROM t_node WHERE id IN
+        <foreach collection="list" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </select>
+
+
+</mapper>

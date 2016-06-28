@@ -5,6 +5,38 @@
 <mapper namespace="com.kaishengit.mapper.UserMapper">
 
     <!--
+        <where>
+        1. 当where中的条件有任意的一个成立，则添加where关键字
+        2. 任意的字句以and或or开头，则去掉
+    -->
+    <select id="findByQueryParam" parameterType="map" resultType="User">
+        SELECT * FROM t_user
+        <where>
+            <if test="username != null and username != ''">
+                username = #{username}
+            </if>
+            <if test="password != null and password != ''">
+                and password = #{password}
+            </if>
+            <if test="email != null and email != ''">
+                and email = #{email}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByParams" resultType="User">
+        SELECT * FROM t_user WHERE username = #{username} and password = #{pwd}
+       <!-- SELECT * FROM t_user WHERE username = #{param1} and password = #{param2}-->
+    </select>
+
+
+    <select id="findByMap" resultType="User" parameterType="map">
+        SELECT * FROM t_user WHERE username = #{username} and password = #{password}
+    </select>
+
+
+
+    <!--
         public User findById(Integer id)
 
         int integer -> Integer
@@ -21,8 +53,10 @@
 
     <!--
         save(User user)
+        useGeneratedKeys="true" 代表需要获取自动生成的增长主键值
+        keyProperty="id" 将主键值赋值给参数对象的哪个属性(setXXX)
     -->
-    <insert id="save" parameterType="com.kaishengit.pojo.User">
+    <insert id="save" parameterType="com.kaishengit.pojo.User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_user(username, password, email, avatar, createtime, loginip, logintime, state)
         VALUES (#{username},#{password},#{email},#{avatar},#{createtime},#{loginip},#{logintime},#{state})
     </insert>
