@@ -40,10 +40,17 @@
     </environments>
 
     <!--加载Mapper文件-->
-    <mappers>
+    <!--<mappers>
         <mapper resource="mapper/UserMapper.xml"/>
         <mapper resource="mapper/NodeMapper.xml"/>
         <mapper resource="mapper/TopicMapper.xml"/>
+    </mappers>-->
+
+    <mappers>
+        <mapper class="com.kaishengit.mapper.UserMapper"/>
+        <mapper class="com.kaishengit.mapper.TagMapper"/>
+        <mapper class="com.kaishengit.mapper.TopicMapper"/>
+        <mapper class="com.kaishengit.mapper.NodeMapper"/>
     </mappers>
 
 </configuration>

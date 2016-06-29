@@ -1,7 +1,10 @@
 package com.kaishengit.pojo;
 
-public class Topic {
+import java.io.Serializable;
 
+public class Topic implements Serializable {
+
+    private static final long serialVersionUID = -2176004739518412906L;
     private Integer id;
     private String title;
     private String text;

@@ -1,9 +1,11 @@
 package com.kaishengit.pojo;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class User {
+public class User implements Serializable{
 
+    private static final long serialVersionUID = 5115019539203978939L;
     private Integer id;
     private String username;
     private String password;

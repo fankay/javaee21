@@ -107,14 +107,13 @@
 
     <update id="update" parameterType="User">
         UPDATE t_user
-         <set>
+         set
             password = #{password},
              email = #{email},
              avatar=#{avatar},
              loginip=#{loginip},
              logintime=#{logintime},
              state=#{state}
-         </set>
         where id = #{id}
     </update>
 

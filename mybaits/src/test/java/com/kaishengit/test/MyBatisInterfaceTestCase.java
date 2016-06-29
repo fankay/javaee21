@@ -137,7 +137,7 @@ public class MyBatisInterfaceTestCase {
 
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 
-        User user = userMapper.findById(14);
+        User user = userMapper.findById(16);
         user.setPassword("00998877");
 
         userMapper.update(user);
@@ -152,7 +152,7 @@ public class MyBatisInterfaceTestCase {
         SqlSession sqlSession = MyBatisUtil.getSqlSession();
 
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
-        userMapper.del(14);
+        userMapper.del(16);
 
         sqlSession.commit();
         sqlSession.close();
