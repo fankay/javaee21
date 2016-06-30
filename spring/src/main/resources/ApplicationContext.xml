@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="userDao" class="com.kaishengit.dao.UserDaoImpl"/>
+    <bean id="userDao2" class="com.kaishengit.dao.UserDaoImpl2"/>
+
+    <bean id="userService" class="com.kaishengit.service.UserService">
+        <property name="userDaoX" ref="userDao2"/>
+    </bean>
+
+    <!--
+        layz-init : true 表示在调用getBean的时候再去创建类的对象（类延迟加载）
+    -->
+    <!--<bean id="userDao" class="com.kaishengit.dao.UserDao" lazy-init="true"/>-->
+
+
+    <!--
+        scope:默认值 singleton，
+        如果修改为prototype则每次调用getBean方法时会获取一个类的对象，容器启动时将不会创建该类的对象
+    -->
+    <!--<bean id="userDao" class="com.kaishengit.dao.UserDao" scope="prototype"/>-->
+
+
+    <!--
+        init-method 定义类中的初始化方法
+        destroy-method 定义类中的销毁方法
+    -->
+    <!--<bean id="userDao" class="com.kaishengit.dao.UserDao" init-method="init" destroy-method="destroy"/>-->
+
+    <!--别名 将userDao产生另一个名字myDao-->
+    <!--<alias name="userDao" alias="myDao"/>-->
+
+
+</beans>
