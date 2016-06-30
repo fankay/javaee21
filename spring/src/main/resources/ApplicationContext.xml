@@ -2,8 +2,47 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans.xsd">
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--AOP-->
+
+    <!--1. 将通知类放入Spring容器-->
+    <bean id="myAdivce" class="com.kaishengit.aop.MyAdvice"/>
+
+    <!--2.-->
+    <aop:config>
+        <!--2.1 引用通知类对象-->
+        <aop:aspect ref="myAdivce">
+            <!--2.2 定义切入点表达式-->
+            <aop:pointcut id="myPointCut" expression="execution(* com.kaishengit.dao..*.*(..))"/>
+            <!--2.3 加入各种通知-->
+            <!--环绕通知-->
+            <aop:around method="aroundAdvice" pointcut-ref="myPointCut"/>
+
+
+            <!--前置通知-->
+            <!--<aop:before method="beforeAdvice" pointcut-ref="myPointCut"/>-->
+            <!--后置通知-->
+            <!--<aop:after-returning method="afterReturingAdvice" pointcut-ref="myPointCut" returning="result"/>-->
+            <!--异常通知-->
+            <!--<aop:after-throwing method="exceptionAdvice" pointcut-ref="myPointCut" throwing="e"/>-->
+            <!--最终通知-->
+            <!--<aop:after method="finallyAdvie" pointcut-ref="myPointCut"/>-->
+        </aop:aspect>
+    </aop:config>
+
+
+
+    <bean id="userDao" class="com.kaishengit.dao.UserDaoImpl"/>
+
+    <bean id="userService" class="com.kaishengit.service.UserService">
+        <property name="userDaoX" ref="userDao"/>
+    </bean>
+
 
 
     <!--<bean id="bookService" class="com.kaishengit.service.BookService" p:bookName="head first Ruby" p:num="1000">
@@ -36,8 +75,8 @@
     </bean>-->
 
 
-    <bean id="userDao" class="com.kaishengit.dao.UserDaoImpl"/>
-    <bean id="userDao2" class="com.kaishengit.dao.UserDaoImpl2"/>
+    <!--<bean id="userDao" class="com.kaishengit.dao.UserDaoImpl"/>-->
+    <!--<bean id="userDao2" class="com.kaishengit.dao.UserDaoImpl2"/>-->
 
     <!--
         自动注入
@@ -48,7 +87,7 @@
         参数的类型从Spring容器中查找对象。
     -->
 
-    <bean id="userService" class="com.kaishengit.service.UserService" autowire="constructor"/>
+    <!--<bean id="userService" class="com.kaishengit.service.UserService" autowire="constructor"/>-->
 
 
 
