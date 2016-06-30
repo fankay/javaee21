@@ -1,16 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!--<bean id="bookService" class="com.kaishengit.service.BookService" p:bookName="head first Ruby" p:num="1000">
+        <property name="lists">
+            <list>
+                <value>list1</value>
+                <value>list2</value>
+                <value>list3</value>
+            </list>
+        </property>
+        <property name="sets">
+            <set>
+                <value>set1</value>
+                <value>set2</value>
+            </set>
+        </property>
+        <property name="maps">
+            <map>
+                <entry key="k1" value="v1"/>
+                <entry key="k2" value="v2"/>
+            </map>
+        </property>
+        <property name="properties">
+            <props>
+                <prop key="k1">v1</prop>
+                <prop key="k2">v2</prop>
+            </props>
+        </property>
+        <property name="userDao" ref="userDao2"/>
+    </bean>-->
 
 
     <bean id="userDao" class="com.kaishengit.dao.UserDaoImpl"/>
     <bean id="userDao2" class="com.kaishengit.dao.UserDaoImpl2"/>
 
-    <bean id="userService" class="com.kaishengit.service.UserService">
+    <!--
+        自动注入
+        1.byName : 根据setXXX()方法的xxx部分的名字从Spring容器中获取对象，并自动注入到当前类中
+        2.byType : 根据set方法参数的类型从Spring容器中查找符合的对象，并自动注入到当前类中。如果Spring
+        容器中有一个以上的Bean符合类型，则抛出异常
+        3.contructor 先根据构造方法的参数的名字从Spring容器中查找对象，如果没有找到在根据构造方法
+        参数的类型从Spring容器中查找对象。
+    -->
+
+    <bean id="userService" class="com.kaishengit.service.UserService" autowire="constructor"/>
+
+
+
+
+    <!--构造方法注入-->
+
+   <!-- <bean id="userService" class="com.kaishengit.service.UserService">
+        &lt;!&ndash;根据构造方法参数的类型&ndash;&gt;
+        <constructor-arg type="com.kaishengit.dao.UserDao" ref="userDao"/>
+        <constructor-arg type="com.kaishengit.dao.UserDao" ref="userDao2"/>
+    </bean>-->
+
+
+    <!--<bean id="userService" class="com.kaishengit.service.UserService">
+        &lt;!&ndash;构造方法参数的索引，索引从0开始&ndash;&gt;
+        <constructor-arg index="0" ref="userDao2"/>
+    </bean>-->
+    <!--<bean id="userService" class="com.kaishengit.service.UserService">
+        <constructor-arg name="userDao" ref="userDao2"/>
+    </bean>-->
+
+
+    <!--Set方法注入-->
+    <!--<bean id="userService" class="com.kaishengit.service.UserService" p:userDaoX-ref="userDao2"/>-->
+
+    <!--<bean id="userService" class="com.kaishengit.service.UserService">
+        <property name="userDaoX">
+            <bean class="com.kaishengit.dao.UserDaoImpl2"/>
+        </property>
+    </bean>-->
+
+
+    <!--<bean id="userService" class="com.kaishengit.service.UserService">
+        <property name="userDaoX">
+            <ref bean="userDao"/>
+        </property>
+    </bean>-->
+
+    <!--<bean id="userService" class="com.kaishengit.service.UserService">
         <property name="userDaoX" ref="userDao2"/>
-    </bean>
+    </bean>-->
 
     <!--
         layz-init : true 表示在调用getBean的时候再去创建类的对象（类延迟加载）
