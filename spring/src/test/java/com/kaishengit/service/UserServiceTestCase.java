@@ -1,5 +1,7 @@
 package com.kaishengit.service;
 
+import com.kaishengit.pojo.User;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -16,8 +18,18 @@ public class UserServiceTestCase {
 
 
     @Test
-    public void testLogin() {
-        userService.login("Spring","123123","100.34.23.21");
-    }
+    public void testSave() {
+        User user = new User();
+        user.setUsername("Spring+MyBaits");
+        user.setPassword("123123");
+        user.setAddress("zzz");
 
+        userService.save(user);
+
+    }
+    @Test
+    public void testFindById() {
+        User user = userService.findUserById(2);
+        Assert.assertNotNull(user);
+    }
 }
