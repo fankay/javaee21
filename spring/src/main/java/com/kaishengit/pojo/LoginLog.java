@@ -1,5 +1,7 @@
 package com.kaishengit.pojo;
 
+import org.joda.time.DateTime;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -48,6 +50,11 @@ public class LoginLog implements Serializable {
 
     public void setUserid(Integer userid) {
         this.userid = userid;
+    }
+
+    public String getNiceCreateTime() {
+        DateTime dateTime = new DateTime(createtime);
+        return dateTime.toString("yyyy-MM-dd HH:mm");
     }
 
     @Override
