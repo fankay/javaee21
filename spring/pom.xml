@@ -44,6 +44,14 @@
       <version>4.2.6.RELEASE</version>
     </dependency>
 
+    <!--JSR 330-->
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <version>1</version>
+    </dependency>
+
+
 
   </dependencies>
   <build>
