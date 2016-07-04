@@ -6,6 +6,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h3>User Show</h3>
+    <h3>User Show ID: ${userId}</h3>
 </body>
 </html>
