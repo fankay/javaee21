@@ -49,7 +49,7 @@ public class Page<T> {
         if(pageNo > totalPages) {
             this.pageNo = totalPages;
         }
-        if(pageNo <= 0) {
+        if(this.pageNo <= 0) {
             this.pageNo = 1;
         }
 

@@ -17,6 +17,31 @@
             <div class="alert alert-success">${message}</div>
         </c:if>
 
+        <div class="well well-sm">
+            <form method="get" class="form-inline">
+                <div class="form-group">
+                    <input type="text" placeholder="书籍名称" name="bookname" value="${bookname}" class="form-control">
+                </div>
+                <div class="form-group">
+                    <select name="type" class="form-control">
+                        <option value="">请选择类型</option>
+                        <c:forEach items="${types}" var="type">
+                            <option value="${type.id}" ${typeid == type.id ? 'selected' : '' }>${type.booktype}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select name="pub" class="form-control">
+                        <option value="">请选择出版社</option>
+                        <c:forEach items="${pubs}" var="pub">
+                            <option value="${pub.id}" ${pubid == pub.id ? 'selected' : ''} >${pub.pubname}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+                <button class="btn btn-default">搜索</button>
+            </form>
+        </div>
+
         <a href="/books/new" class="btn btn-success">添加新书籍</a>
 
         <table class="table">
@@ -32,6 +57,11 @@
                 </tr>
             </thead>
             <tbody>
+            <c:if test="${empty page.items}">
+                <tr>
+                    <td colspan="7">没有任何数据</td>
+                </tr>
+            </c:if>
             <c:forEach items="${page.items}" var="book">
                 <tr>
                     <td>${book.bookname}</td>
