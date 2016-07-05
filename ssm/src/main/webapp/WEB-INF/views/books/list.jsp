@@ -40,12 +40,28 @@
                     <td>${book.booknum}</td>
                     <td>${book.publisher.pubname}</td>
                     <td>${book.bookType.booktype}</td>
-                    <td>#</td>
+                    <td>
+                        <a href="/books/${book.id}">修改</a>
+                        <a href="javascript:;" rel="${book.id}" class="delLink">删除</a>
+                    </td>
                 </tr>
             </c:forEach>
             </tbody>
         </table>
 
     </div>
+    <script src="/static/js/jquery-1.11.3.min.js"></script>
+    <script>
+        $(function(){
+
+            $(".delLink").click(function(){
+                var id = $(this).attr("rel");
+                if(confirm("确定要删除吗?")) {
+                    window.location.href = "/books/"+id+"/del";
+                }
+            });
+
+        });
+    </script>
 </body>
 </html>
