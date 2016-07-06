@@ -85,6 +85,31 @@
         ORDER by t_book.id DESC
         limit ${start},${size}
     </select>
+    <select id="findByDataTable" resultType="com.kaishengit.pojo.Book">
+        SELECT t_book.*,
+        t_booktype.id as 'bookType.id',t_booktype.booktype as 'bookType.bookType',
+        t_publisher.id as 'publisher.id',t_publisher.pubname as 'publisher.pubname'
+        FROM t_book
+        INNER join t_booktype ON t_book.typeid = t_booktype.id
+        INNER JOIN t_publisher on t_book.pubid = t_publisher.id
+        <where>
+            <if test="keyword != null and keyword != ''">
+                t_book.bookname  like concat('%',#{keyword},'%')
+            </if>
+        </where>
+        <if test="sortColumn != null and sortColumn != '' and sortType != null and sortType != ''">
+        order by ${sortColumn} ${sortType}
+        </if>
+        limit ${start},${length}
+    </select>
+    <select id="countByKeyWord" resultType="long">
+        SELECT COUNT(*) FROM t_book
+        <where>
+            <if test="keyword != null and keyword != ''">
+                bookname LIKE concat('%',#{keyword},'%')
+            </if>
+        </where>
+    </select>
 
 
 </mapper>
