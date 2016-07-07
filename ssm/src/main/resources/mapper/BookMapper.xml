@@ -93,8 +93,14 @@
         INNER join t_booktype ON t_book.typeid = t_booktype.id
         INNER JOIN t_publisher on t_book.pubid = t_publisher.id
         <where>
-            <if test="keyword != null and keyword != ''">
-                t_book.bookname  like concat('%',#{keyword},'%')
+            <if test="bookname != null and bookname != ''">
+                bookname LIKE CONCAT('%',#{bookname},'%')
+            </if>
+            <if test="type != null and type != ''">
+                and typeid = #{type}
+            </if>
+            <if test="pub != null and pub != ''">
+                and pubid = #{pub}
             </if>
         </where>
         <if test="sortColumn != null and sortColumn != '' and sortType != null and sortType != ''">
