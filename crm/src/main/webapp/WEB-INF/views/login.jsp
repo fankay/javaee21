@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -23,13 +24,18 @@
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <form action="/home" method="post">
+        <c:if test="${not empty message}">
+            <div class="alert alert-danger">
+                ${message}
+            </div>
+        </c:if>
+        <form action="/" method="post">
             <div class="form-group has-feedback">
-                <input type="email" class="form-control" placeholder="账号">
+                <input type="text" class="form-control" name="username" placeholder="账号">
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input type="password" class="form-control" placeholder="密码">
+                <input type="password" class="form-control" name="password" placeholder="密码">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
             <div class="row">

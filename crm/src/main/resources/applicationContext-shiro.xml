@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--Apache Shiro配置-->
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!--配置登录的URL-->
+        <property name="loginUrl" value="/"/>
+        <!--登录成功的结果URL-->
+        <property name="successUrl" value="/home"/>
+        <!--没有权限重定向到URL-->
+        <property name="unauthorizedUrl" value="/403"/>
+        <property name="securityManager" ref="securityManager"/>
+        <!--配置URL级别的权限要求-->
+        <property name="filterChainDefinitions">
+            <value>
+                /static/** = anon
+                /admin/** = roles[管理员]
+                /** = authc
+            </value>
+        </property>
+    </bean>
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="shiroRealm"/>
+        <property name="cacheManager" ref="cacheManager"/>
+    </bean>
+
+    <bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager"/>
+
+
+</beans>
