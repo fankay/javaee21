@@ -9,4 +9,25 @@
          VALUES (#{logintime},#{loginip},#{userid})
     </insert>
 
+    <select id="findByParam" resultType="UserLog">
+        SELECT * FROM t_user_log
+        <where>
+            <if test="userId != null and userId != ''">
+                userid = #{userId}
+            </if>
+        </where>
+        order by id desc
+        <if test="start != null and start != '' and length != null and length != ''">
+            limit ${start},${length}
+        </if>
+    </select>
+    <select id="countByParam" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM t_user_log
+        <where>
+            <if test="userId != null and userId != ''">
+                userid = #{userId}
+            </if>
+        </where>
+    </select>
+
 </mapper>

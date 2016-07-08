@@ -1,6 +1,8 @@
 package com.kaishengit.pojo;
 
-public class UserLog {
+import java.io.Serializable;
+
+public class UserLog implements Serializable{
 
     private Integer id;
     private String logintime;

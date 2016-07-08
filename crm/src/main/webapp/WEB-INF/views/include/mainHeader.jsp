@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <!-- Main Header -->
 <header class="main-header">
 
@@ -115,15 +116,15 @@
                     </ul>
                 </li>
                 <!-- User Account Menu -->
-                <li class="dropdown user user-menu">
+                <li class="dropdown">
                     <!-- Menu Toggle Button -->
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <!-- The user image in the navbar-->
-                        <img src="/static/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                        <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                        <span class="hidden-xs">Alexander Pierce</span>
+                        <span class="hidden-xs"><shiro:principal property="realname"/></span>
                     </a>
                     <ul class="dropdown-menu">
+                        <li><a href="/user/password">修改密码</a></li>
+                        <li><a href="/user/log">登录日志</a></li>
+                        <li class="divider"></li>
                         <li><a href="/logout">安全退出</a></li>
                     </ul>
                 </li>

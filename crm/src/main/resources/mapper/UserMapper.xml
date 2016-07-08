@@ -5,6 +5,10 @@
 <mapper namespace="com.kaishengit.mapper.UserMapper">
 
     <cache/>
+    <update id="updateUser">
+        UPDATE t_user SET password = #{password},realname = #{realname},weixin = #{weixin},enable=#{enable}
+        where id = #{id}
+    </update>
 
     <select id="findByUsername" resultType="User">
         SELECT * FROM t_user WHERE username = #{username}
