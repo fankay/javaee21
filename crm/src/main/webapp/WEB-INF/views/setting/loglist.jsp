@@ -15,10 +15,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="/static/plugins/fontawesome/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="/static/plugins/datatables/css/dataTables.bootstrap.min.css">
+
     <!-- Theme style -->
     <link rel="stylesheet" href="/static/dist/css/AdminLTE.min.css">
     <link rel="stylesheet" href="/static/dist/css/skins/skin-blue.min.css">
-    <link rel="stylesheet" href="/static/plugins/datatables/css/dataTables.bootstrap.min.css">
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -32,20 +35,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Main content -->
         <section class="content">
 
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">登录日志列表</h3>
-                </div>
-                <div class="box-body">
-                    <table class="table" id="logTable">
-                        <thead>
-                            <tr>
-                                <th>登录时间</th>
-                                <th>登录IP</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">登录日志列表</h3>
+                        </div>
+                        <div class="box-body">
+                            <table class="table table-bordered table-hover" id="logTable">
+                                <thead>
+                                <tr>
+                                    <th>登录时间</th>
+                                    <th>登录IP</th>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -74,6 +81,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             serverSide:true,
             ajax:"/user/log/load",
             ordering:false,
+            "autoWidth": false,
             columns:[
                 {"data":"logintime"},
                 {"data":"loginip"}
