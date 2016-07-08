@@ -4,4 +4,9 @@
 
     <cache/>
 
+    <insert id="save">
+        INSERT INTO t_user_log(logintime, loginip, userid)
+         VALUES (#{logintime},#{loginip},#{userid})
+    </insert>
+
 </mapper>

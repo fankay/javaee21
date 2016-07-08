@@ -25,9 +25,25 @@
     <!-- /.login-logo -->
     <div class="login-box-body">
         <c:if test="${not empty message}">
-            <div class="alert alert-danger">
-                ${message}
-            </div>
+            <c:choose>
+                <c:when test="${message.state == 'success'}">
+                    <div class="alert alert-success">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                            ${message.message}
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                            ${message.message}
+                    </div>
+                </c:otherwise>
+            </c:choose>
+
         </c:if>
         <form action="/" method="post">
             <div class="form-group has-feedback">
