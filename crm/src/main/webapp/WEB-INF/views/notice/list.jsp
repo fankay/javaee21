@@ -8,7 +8,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>凯盛CRM</title>
+    <title>凯盛CRM | 公告列表</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
@@ -17,38 +17,35 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="/static/plugins/fontawesome/css/font-awesome.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="/static/dist/css/AdminLTE.min.css">
-    <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
-          page. However, you can choose any other skin. Make sure you
-          apply the skin class to the body tag so the changes take effect.
-    -->
     <link rel="stylesheet" href="/static/dist/css/skins/skin-blue.min.css">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
-    <%@include file="include/mainHeader.jsp"%>
-    <jsp:include page="include/leftSide.jsp">
-        <jsp:param name="menu" value="home"/>
+    <%@include file="../include/mainHeader.jsp"%>
+    <jsp:include page="../include/leftSide.jsp">
+        <jsp:param name="menu" value="notice"/>
     </jsp:include>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <h1>
-                首页
-                <small>客户关系管理系统</small>
-            </h1>
-            <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-                <li class="active">Here</li>
-            </ol>
-        </section>
 
         <!-- Main content -->
         <section class="content">
 
-            <!-- Your Page Content Here -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">公告列表</h3>
+                    <shiro:hasRole name="经理">
+                        <div class="box-tools pull-right">
+                            <a href="/notice/new" class="btn btn-xs btn-success"><i class="fa fa-pencil"></i> 发表公告</a>
+                        </div>
+                    </shiro:hasRole>
+                </div>
+                <div class="box-body">
+
+                </div>
+            </div>
 
         </section>
         <!-- /.content -->

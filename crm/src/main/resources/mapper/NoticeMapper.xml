@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaishengit.mapper.NoticeMapper">
+
+    <cache/>
+
+    <insert id="save">
+        INSERT into t_notice(title, context,  userid, realname)
+         VALUES (#{title},#{context},#{userid},#{realname})
+    </insert>
+
+</mapper>
