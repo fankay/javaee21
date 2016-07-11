@@ -1,5 +1,8 @@
 package com.kaishengit.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JSONResult {
 
     public static final String SUCCESS = "success";
