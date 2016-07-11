@@ -117,6 +117,54 @@ scratch. This page gets rid of all links and provides the needed markup only.
 </div><!-- /.modal -->
 
 
+<div class="modal fade" id="editModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">编辑用户</h4>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <input type="hidden" name="id" id="edit_user_id">
+                    <div class="form-group">
+                        <label>账号(用于系统登录)</label>
+                        <input type="text" class="form-control" disabled name="username" id="edit_user_username">
+                    </div>
+                    <div class="form-group">
+                        <label>员工姓名(真实姓名)</label>
+                        <input type="text" class="form-control" name="realname" id="edit_user_realname">
+                    </div>
+                    <div class="form-group">
+                        <label>微信号</label>
+                        <input type="text" class="form-control" name="weixin" id="edit_user_weixin">
+                    </div>
+                    <div class="form-group">
+                        <label>角色</label>
+                        <select class="form-control" name="roleid" id="edit_user_roleid">
+                            <c:forEach items="${roleList}" var="role">
+                                <option value="${role.id}">${role.rolename}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>状态</label>
+                        <select class="form-control" name="enable" id="edit_user_enable">
+                            <option value="true">正常</option>
+                            <option value="false">禁用</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="editBtn">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
 
 <!-- REQUIRED JS SCRIPTS -->
 
@@ -157,7 +205,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     return day.format("YYYY-MM-DD HH:mm");
                 }},
                 {"data":function(row){
-                    return "<a href='javascript:;' class='resetPwd' rel='"+row.id+"'>重置密码</a>";
+                    if(row.username == 'admin') {
+                        return "";
+                    } else {
+                        return "<a href='javascript:;' class='resetPwd' rel='"+row.id+"'>重置密码</a> &nbsp;&nbsp;" +
+                            "<a href='javascript:;' class='edit' rel='"+row.id+"'>编辑</a>";
+                    }
                 }}
             ],
             "language": { //定义中文
@@ -256,6 +309,69 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 });
             }
         })
+
+        //编辑
+
+        $("#editForm").validate({
+            errorClass:"text-danger",
+            errorElement:"span",
+            rules:{
+                realname:{
+                    required:true,
+                    rangelength:[2,20]
+                },
+                weixin:{
+                    required:true
+                }
+            },
+            messages:{
+                realname:{
+                    required:"请输入真实姓名",
+                    rangelength:"真实姓名长度2~20位"
+                },
+                weixin:{
+                    required:"请输入微信号码"
+                }
+            },
+            submitHandler:function(form){
+                $.post("/admin/users/edit",$(form).serialize()).done(function(data){
+                    if(data == "success") {
+                        $("#editModal").modal('hide');
+                        dataTable.ajax.reload();
+                    }
+                }).fail(function(){
+                    alert("服务器异常");
+                });
+            }
+        });
+
+        $(document).delegate(".edit","click",function(){
+            var id = $(this).attr("rel");
+            $.get("/admin/users/"+id+".json").done(function(result){
+                if(result.state == "success") {
+                    $("#edit_user_id").val(result.data.id);
+                    $("#edit_user_username").val(result.data.username);
+                    $("#edit_user_realname").val(result.data.realname);
+                    $("#edit_user_weixin").val(result.data.weixin);
+                    $("#edit_user_roleid").val(result.data.roleid);
+                    $("#edit_user_enable").val(result.data.enable.toString());
+
+                    $("#editModal").modal({
+                        show:true,
+                        dropback:'static',
+                        keyboard:false
+                    });
+                } else {
+                    alert(result.message);
+                }
+            }).fail(function(){
+                alert("服务器异常");
+            });
+        });
+
+        $("#editBtn").click(function(){
+            $("#editForm").submit();
+        });
     });
 </script>
 </body>
