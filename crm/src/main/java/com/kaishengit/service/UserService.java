@@ -72,4 +72,30 @@ public class UserService {
         param.put("userId",ShiroUtil.getCurrentUserID());
         return userLogMapper.countByParam(param);
     }
+
+    /**
+     * 根据查询参数获取用户列表
+     * @param params
+     * @return
+     */
+    public List<User> findUserListByParam(Map<String, Object> params) {
+        return userMapper.findByParam(params);
+    }
+
+    /**
+     * 获取用户的总数量
+     * @return
+     */
+    public Long findtUserCount() {
+        return userMapper.count();
+    }
+
+    /**
+     * 根据查询条件获取用户数量
+     * @param params
+     * @return
+     */
+    public Long findUserCountByParam(Map<String, Object> params) {
+        return userMapper.countByParam(params);
+    }
 }

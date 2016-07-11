@@ -14,5 +14,28 @@
         SELECT * FROM t_user WHERE username = #{username}
     </select>
 
+    <select id="findByParam" resultType="User">
+        SELECT t_user.*,t_role.id as 'role.id',t_role.rolename as 'role.rolename' FROM t_user
+        INNER JOIN t_role on t_user.roleid = t_role.id
+        <where>
+            <if test="keyword != null and keyword != ''">
+                username LIKE concat('%',#{keyword},'%') or realname  like concat('%',#{keyword},'%')
+            </if>
+        </where>
+        order by t_user.id desc
+        limit ${start},${length}
+    </select>
+    <select id="count" resultType="java.lang.Long">
+        SELECT count(*) FROM t_user
+    </select>
+    <select id="countByParam" resultType="java.lang.Long">
+        SELECT count(*) FROM t_user
+        <where>
+            <if test="keyword != null and keyword != ''">
+                username LIKE concat('%',#{keyword},'%') or realname  like concat('%',#{keyword},'%')
+            </if>
+        </where>
+    </select>
+
 
 </mapper>

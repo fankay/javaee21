@@ -47,7 +47,7 @@
         </c:if>
         <form action="/" method="post">
             <div class="form-group has-feedback">
-                <input type="text" class="form-control" name="username" placeholder="账号">
+                <input type="text" class="form-control" name="username" autofocus placeholder="账号">
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">

@@ -22,9 +22,9 @@
             </shiro:hasAnyRoles>
             <shiro:hasRole name="管理员">
             <li class="treeview">
-                <a href="#"><i class="fa fa-cogs"></i> <span>系统管理</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <a href="javascript:;"><i class="fa fa-cogs"></i> <span>系统管理</span> <i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
-                    <li><a href="#">员工管理</a></li>
+                    <li><a href="/admin/users">员工管理</a></li>
                     <li><a href="#">系统设置</a></li>
                 </ul>
             </li>
