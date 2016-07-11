@@ -40,6 +40,9 @@
             </if>
         </where>
     </select>
+    <select id="findById" resultType="com.kaishengit.pojo.User">
+        SELECT * FROM t_user WHERE id = #{id}
+    </select>
 
 
 </mapper>
