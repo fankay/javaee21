@@ -8,4 +8,8 @@
         SELECT * FROM t_role WHERE id = #{id}
     </select>
 
+    <select id="findAll" resultType="Role">
+        SELECT * FROM t_role
+    </select>
+
 </mapper>

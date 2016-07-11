@@ -2,10 +2,12 @@ package com.kaishengit.controller;
 
 import com.google.common.collect.Maps;
 import com.kaishengit.dto.DataTablesResult;
+import com.kaishengit.pojo.Role;
 import com.kaishengit.pojo.User;
 import com.kaishengit.service.UserService;
 import com.kaishengit.util.Strings;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,8 +26,10 @@ public class AdminController {
 
 
     @RequestMapping(value = "/users",method = RequestMethod.GET)
-    public String userList() {
+    public String userList(Model model) {
+        List<Role> roleList = userService.findAllRole();
 
+        model.addAttribute("roleList",roleList);
         return "admin/userlist";
     }
 
@@ -48,6 +52,34 @@ public class AdminController {
         Long filterCount = userService.findUserCountByParam(params);
 
         return new DataTablesResult<>(draw,userList,count,filterCount);
+    }
+
+
+    /**
+     * 验证用户名是否可用（Ajax调用）
+     * @param username
+     * @return
+     */
+    @RequestMapping(value = "/user/checkusername",method = RequestMethod.GET)
+    @ResponseBody
+    public String checkUserName(String username) {
+        User user = userService.findUserByUserName(username);
+        if(user == null) {
+            return "true";
+        }
+        return "false";
+    }
+
+
+    /**
+     * 添加新用户
+     * @return
+     */
+    @RequestMapping(value = "/users/new",method = RequestMethod.POST)
+    @ResponseBody
+    public String saveUser(User user) {
+        userService.saveUser(user);
+        return "success";
     }
 
 
