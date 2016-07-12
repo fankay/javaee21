@@ -5,7 +5,6 @@ import com.kaishengit.dto.DataTablesResult;
 import com.kaishengit.exception.NotFoundException;
 import com.kaishengit.pojo.Notice;
 import com.kaishengit.service.NoticeService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,7 +47,7 @@ public class NoticeController {
         List<Notice> noticeList = noticeService.findByParam(param);
         Long count = noticeService.count();
 
-        return new DataTablesResult(draw,noticeList,count,count);
+        return new DataTablesResult<>(draw,noticeList,count,count);
     }
 
     /**
