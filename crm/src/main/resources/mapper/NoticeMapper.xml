@@ -9,4 +9,15 @@
          VALUES (#{title},#{context},#{userid},#{realname})
     </insert>
 
+    <select id="findByParam" resultType="Notice">
+        SELECT * FROM t_notice order by id desc
+        limit ${start},${length}
+    </select>
+    <select id="count" resultType="java.lang.Long">
+        SELECT count(*) FROM t_notice
+    </select>
+    <select id="findById" resultType="com.kaishengit.pojo.Notice">
+        SELECT * FROM t_notice WHERE  id = #{id}
+    </select>
+
 </mapper>

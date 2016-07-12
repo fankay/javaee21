@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -8,7 +9,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>凯盛CRM | 新增公告</title>
+    <title>凯盛CRM | ${notice.title}</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
@@ -18,7 +19,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Theme style -->
     <link rel="stylesheet" href="/static/dist/css/AdminLTE.min.css">
     <link rel="stylesheet" href="/static/dist/css/skins/skin-blue.min.css">
-    <link rel="stylesheet" href="/static/plugins/simditor/styles/simditor.css">
+
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -30,31 +31,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-
+        <section class="content-header">
+            <h1>　　</h1>
+            <ol class="breadcrumb">
+                <li><a href="/notice"><i class="fa fa-list"></i> 公告列表</a></li>
+                <li class="active">${notice.title}</li>
+            </ol>
+        </section>
         <!-- Main content -->
         <section class="content">
-
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">新增公告</h3>
+                    <h3 class="box-title">${notice.title} <small>${notice.realname} <fmt:formatDate value="${notice.createtime}" pattern="y-M-d H:m"/></small></h3>
                 </div>
                 <div class="box-body">
-                    <form method="post" id="newForm">
-                        <div class="form-group">
-                            <label>标题</label>
-                            <input type="text" name="title" class="form-control" id="title">
-                        </div>
-                        <div class="form-group">
-                            <label>公告内容</label>
-                            <textarea name="context" id="context" rows="10" class="form-control"></textarea>
-                        </div>
-                    </form>
+                    ${notice.context}
                 </div>
                 <div class="box-footer">
-                    <button id="saveBtn" class="btn btn-primary pull-right">发表</button>
+
                 </div>
             </div>
-
         </section>
         <!-- /.content -->
     </div>
@@ -70,34 +66,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="/static/bootstrap/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/static/dist/js/app.min.js"></script>
-<script src="/static/plugins/simditor/scripts/module.min.js"></script>
-<script src="/static/plugins/simditor/scripts/hotkeys.min.js"></script>
-<script src="/static/plugins/simditor/scripts/uploader.min.js"></script>
-<script src="/static/plugins/simditor/scripts/simditor.min.js"></script>
 <script>
     $(function(){
 
-        var edit = new Simditor({
-            textarea:$("#context"),
-            placeholder: '请输入公告内容',
-            upload:{
-                url:"/notice/img/upload",
-                fileKey:"file"
-            }
-        });
 
 
-        $("#saveBtn").click(function(){
-            if(!$("#title").val()) {
-                $("#title").focus();
-                return;
-            }
-            if(!$("#context").val()) {
-                $("#context").focus();
-                return;
-            }
-            $("#newForm").submit();
-        });
+
 
     });
 </script>
