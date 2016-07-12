@@ -11,7 +11,10 @@
     <context:component-scan base-package="com.kaishengit.controller"/>
 
     <!--基于注解的Controller-->
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven>
+        <!--URL中支持带.的path变量-->
+        <mvc:path-matching registered-suffixes-only="true"/>
+    </mvc:annotation-driven>
 
     <!--静态资源-->
     <mvc:resources mapping="/static/**" location="/static/">
@@ -24,6 +27,7 @@
         <property name="prefix" value="/WEB-INF/views/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
+
 
     <!--上传文件解析器-->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
