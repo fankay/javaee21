@@ -18,7 +18,7 @@
             <li><a href="#"><i class="fa fa-users"></i> <span>客户管理</span></a></li>
             <li><a href="#"><i class="fa fa-bar-chart"></i> <span>统计</span></a></li>
             <li><a href="#"><i class="fa fa-calendar-check-o"></i> <span>代办事项</span></a></li>
-            <li><a href="#"><i class="fa fa-file-text"></i> <span>文档管理</span></a></li>
+            <li class="${param.menu == 'document' ? 'active' : ''}"><a href="/doc"><i class="fa fa-file-text"></i> <span>文档管理</span></a></li>
             </shiro:hasAnyRoles>
             <shiro:hasRole name="管理员">
             <li class="treeview">

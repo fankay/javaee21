@@ -12,7 +12,11 @@
 
     <!--基于注解的Controller-->
     <mvc:annotation-driven>
-        <!--URL中支持带.的path变量-->
+        <!--
+            URL中支持带.的path变量
+            或
+            @RequestMapping(value = "/{q:.+}", method = RequestMethod.GET)
+        -->
         <mvc:path-matching registered-suffixes-only="true"/>
     </mvc:annotation-driven>
 
