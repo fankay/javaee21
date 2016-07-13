@@ -5,6 +5,10 @@ import java.sql.Timestamp;
 
 public class Customer implements Serializable {
 
+    public static final String CUSTOMER_TYPE_PERSON = "person";
+    public static final String CUSTOMER_TYPE_COMPANY = "company";
+
+
     private Integer id;
     private Integer userid;
     private String name;

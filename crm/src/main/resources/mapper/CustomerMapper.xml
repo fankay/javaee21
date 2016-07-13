@@ -3,6 +3,10 @@
 <mapper namespace="com.kaishengit.mapper.CustomerMapper">
 
     <cache/>
+    <insert id="save">
+        INSERT INTO t_customer(name, tel, weixin, address, email, userid, pinyin, companyid, companyname, level, type)
+        VALUES (#{name},#{tel},#{weixin},#{address},#{email},#{userid},#{pinyin},#{companyid},#{companyname},#{level},#{type})
+    </insert>
 
     <select id="findByParam" resultType="Customer">
         SELECT * FROM t_customer
@@ -25,6 +29,15 @@
                 userid = #{userid} or (userid == '' or userid is null)
             </if>
         </where>
+    </select>
+    <select id="findByType" resultType="com.kaishengit.pojo.Customer">
+        SELECT * FROM t_customer WHERE type = #{type}
+    </select>
+    <select id="findById" resultType="com.kaishengit.pojo.Customer">
+        SELECT * FROM t_customer WHERE id = #{id}
+    </select>
+    <select id="findCompanyLikeName" resultType="com.kaishengit.pojo.Customer">
+        SELECT * FROM t_customer WHERE type = 'company' and name like concat('%',#{keyword},'%')
     </select>
 
 </mapper>
