@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kaishengit.mapper.CustomerMapper">
+
+    <cache/>
+
+    <select id="findByParam" resultType="Customer">
+        SELECT * FROM t_customer
+        <where>
+            <if test="userid != null and userid != ''">
+                userid = #{userid} or (userid == '' or userid is null)
+            </if>
+        </where>
+        limit ${start},${length}
+    </select>
+
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM t_customer
+    </select>
+
+    <select id="countByParam" resultType="long">
+        SELECT COUNT(*) FROM t_customer
+        <where>
+            <if test="userid != null and userid != ''">
+                userid = #{userid} or (userid == '' or userid is null)
+            </if>
+        </where>
+    </select>
+
+</mapper>

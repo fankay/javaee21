@@ -38,7 +38,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">文档列表-${fid}</h3>
+                    <h3 class="box-title">文档列表</h3>
                     <div class="box-tools">
                         <span id="uploadBtn"><span class="text"><i class="fa fa-upload"></i> 上传文件</span></span>
                         <button class="btn btn-bitbucket btn-xs" id="newDir"><i class="fa fa-folder"></i> 新建文件夹</button>
@@ -49,7 +49,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <th></th>
                                 <th>名称</th>
                                 <th>大小</th>
                                 <th>创建人</th>
