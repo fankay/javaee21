@@ -7,14 +7,26 @@
         INSERT INTO t_customer(name, tel, weixin, address, email, userid, pinyin, companyid, companyname, level, type)
         VALUES (#{name},#{tel},#{weixin},#{address},#{email},#{userid},#{pinyin},#{companyid},#{companyname},#{level},#{type})
     </insert>
+    <update id="update">
+        update t_customer set name = #{name},tel = #{tel},weixin = #{weixin},address=#{address},
+        email=#{email},userid=#{userid},pinyin=#{pinyin},companyid=#{companyid},companyname=#{companyname},
+        level=#{level} where id = #{id}
+    </update>
+    <delete id="del">
+        DELETE FROM t_customer WHERE id = #{id}
+    </delete>
 
     <select id="findByParam" resultType="Customer">
         SELECT * FROM t_customer
         <where>
             <if test="userid != null and userid != ''">
-                userid = #{userid} or (userid == '' or userid is null)
+                (userid = #{userid} or (userid = '' or userid is null))
+            </if>
+            <if test="keyword != null and keyword !=''">
+                and (name like concat('%',#{keyword},'%') or pinyin like concat('%',#{keyword},'%') or tel like concat('%',#{keyword},'%'))
             </if>
         </where>
+        order by id desc
         limit ${start},${length}
     </select>
 
@@ -26,7 +38,10 @@
         SELECT COUNT(*) FROM t_customer
         <where>
             <if test="userid != null and userid != ''">
-                userid = #{userid} or (userid == '' or userid is null)
+                userid = #{userid} or (userid = '' or userid is null)
+            </if>
+            <if test="keyword != null and keyword !=''">
+                and (name like concat('%',#{keyword},'%') or pinyin like concat('%',#{keyword},'%') or tel like concat('%',#{keyword},'%'))
             </if>
         </where>
     </select>
@@ -38,6 +53,9 @@
     </select>
     <select id="findCompanyLikeName" resultType="com.kaishengit.pojo.Customer">
         SELECT * FROM t_customer WHERE type = 'company' and name like concat('%',#{keyword},'%')
+    </select>
+    <select id="findByCompanyId" resultType="com.kaishengit.pojo.Customer">
+        SELECT * FROM t_customer WHERE companyid = #{id}
     </select>
 
 </mapper>

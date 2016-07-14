@@ -4,6 +4,8 @@ import com.google.common.collect.Maps;
 import com.kaishengit.mapper.CustomerMapper;
 import com.kaishengit.pojo.Customer;
 import com.kaishengit.util.ShiroUtil;
+import com.kaishengit.util.Strings;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -57,11 +59,36 @@ public class CustomerService {
             customer.setCompanyname(company.getName());
         }
         customer.setUserid(ShiroUtil.getCurrentUserID());
-        //TODO pinyin
+        customer.setPinyin(Strings.toPinyiin(customer.getName()));
         customerMapper.save(customer);
     }
 
     public List<Customer> findCompanyByKeyword(String keyword) {
         return customerMapper.findCompanyLikeName(keyword);
+    }
+
+    /**
+     * 根据ID删除客户
+     * @param id
+     */
+    @Transactional
+    public void delCustomer(Integer id) {
+        Customer customer = customerMapper.findById(id);
+        if(customer != null) {
+            if(customer.getType().equals(Customer.CUSTOMER_TYPE_COMPANY)) {
+                //被删除用户是公司，查找是否有关联客户，如果有，则将公司ID和名称设置为空
+                List<Customer> customerList = customerMapper.findByCompanyId(id);
+                for(Customer cust : customerList) {
+                    cust.setCompanyname(null);
+                    cust.setCompanyid(null);
+                    customerMapper.update(cust);
+                }
+            }
+
+            //TODO 删除关联的项目
+            //TODO 删除关联的代办事项
+
+            customerMapper.del(id);
+        }
     }
 }

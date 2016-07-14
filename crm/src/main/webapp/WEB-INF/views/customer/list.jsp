@@ -20,7 +20,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="/static/dist/css/AdminLTE.min.css">
     <link rel="stylesheet" href="/static/dist/css/skins/skin-blue.min.css">
     <link rel="stylesheet" href="/static/plugins/datatables/css/dataTables.bootstrap.min.css">
-    <link rel="stylesheet" href="/static/plugins/easyautocomplete/easy-autocomplete.min.css">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -51,7 +50,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <th>联系电话</th>
                                 <th>电子邮件</th>
                                 <th>等级</th>
-                                <th>#</th>
+                                <th style="width: 80px">#</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -148,7 +147,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="/static/plugins/datatables/js/dataTables.bootstrap.min.js"></script>
 <script src="/static/plugins/moment/moment.min.js"></script>
 <script src="/static/plugins/validate/jquery.validate.min.js"></script>
-<script src="/static/plugins/easyautocomplete/jquery.easy-autocomplete.min.js"></script>
 <script>
     $(function(){
 
@@ -157,7 +155,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
             ajax:"/customer/load",
             ordering:false,
             "autoWidth": false,
-            "searching":false,
             columns:[
                 {"data":function(row){
                     if(row.type == 'company') {
@@ -173,13 +170,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 }},
                 {"data":"tel"},
                 {"data":"email"},
-                {"data":"level"},
                 {"data":function(row){
-                    return ""
+                    return "<span style='color:#ff7400'>"+row.level+"</span>"
+                }},
+                {"data":function(row){
+                    return "<a href='javascript:;' rel='"+row.id+"' class='editLink'>编辑</a>  "<shiro:hasRole name="经理"> + "<a href='javascript:;' rel='"+row.id+"' class='delLink'>删除</a>　"</shiro:hasRole>;
                 }}
             ],
             "language": { //定义中文
-                "search": "请输入员工姓名或登录账号:",
+                "search": "客户名称或电话:",
                 "zeroRecords": "没有匹配的数据",
                 "lengthMenu": "显示 _MENU_ 条数据",
                 "info": "显示从 _START_ 到 _END_ 条数据 共 _TOTAL_ 条数据",
@@ -248,6 +247,22 @@ scratch. This page gets rid of all links and provides the needed markup only.
         $("#saveBtn").click(function(){
             $("#newForm").submit();
         });
+
+        <shiro:hasRole name="经理">
+        //删除客户
+        $(document).delegate(".delLink","click",function(){
+            if(confirm("删除客户会自动删除关联数据，继续吗?")) {
+                var id = $(this).attr("rel");
+                $.get("/customer/del/"+id).done(function(data){
+                    if("success" == data) {
+                        dataTable.ajax.reload();
+                    }
+                }).fail(function(){
+                    alert("服务器异常");
+                });
+            }
+        });
+        </shiro:hasRole>
 
     });
 </script>

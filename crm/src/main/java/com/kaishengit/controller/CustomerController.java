@@ -7,6 +7,7 @@ import com.kaishengit.service.CustomerService;
 import com.kaishengit.util.Strings;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,10 +37,12 @@ public class CustomerController {
         String draw = request.getParameter("draw");
         String start = request.getParameter("start");
         String length = request.getParameter("length");
+        String keyword = request.getParameter("search[value]");
 
         Map<String,Object> params = Maps.newHashMap();
         params.put("start",start);
         params.put("length",length);
+        params.put("keyword",keyword);
 
         List<Customer> customerList = customerService.findCustomerByParams(params);
         Long count = customerService.count();
@@ -53,6 +56,16 @@ public class CustomerController {
     @ResponseBody
     public String save(Customer customer) {
         customerService.saveCustomer(customer);
+        return "success";
+    }
+
+    /**
+     * 删除客户
+     */
+    @RequestMapping(value = "/del/{id:\\d+}",method = RequestMethod.GET)
+    @ResponseBody
+    public String del(@PathVariable Integer id) {
+        customerService.delCustomer(id);
         return "success";
     }
 
