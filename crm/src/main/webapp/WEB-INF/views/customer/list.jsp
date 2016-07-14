@@ -118,12 +118,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </div>
                     <div class="form-group" id="companyList">
                         <label>所属公司</label>
-                        <select name="companyid" class="form-control">
-                            <option value=""></option>
-                            <c:forEach items="${companyList}" var="company">
-                                <option value="${company.id}">${company.name}</option>
-                            </c:forEach>
-                        </select>
+                        <select name="companyid" class="form-control"></select>
                     </div>
                 </form>
             </div>
@@ -228,6 +223,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
         });
         $("#newBtn").click(function(){
             $("#newForm")[0].reset();
+
+            //使用Ajax加载最新的公司列表
+            $.get("/customer/company.json").done(function(data){
+                var $select = $("#companyList select");
+                $select.html("");
+                $select.append("<option></option>");
+                if(data && data.length) {
+                    for(var i = 0;i < data.length;i++) {
+                        var company = data[i];
+                        var option = "<option value='"+company.id+"'>"+company.name+"</option>";
+                        $select.append(option);
+                    }
+                }
+            }).fail(function(){
+                alert("服务器异常");
+            });
+
+
+            $("#companyList").show();
             $("#newModal").modal({
                 show:true,
                 dropback:'static',

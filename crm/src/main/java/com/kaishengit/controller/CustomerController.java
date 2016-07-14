@@ -52,6 +52,17 @@ public class CustomerController {
 
     }
 
+    @RequestMapping(value = "/company.json",method = RequestMethod.GET)
+    @ResponseBody
+    public List<Customer> showAllCompanyJson() {
+        return customerService.findAllCompany();
+    }
+
+    /**
+     * 添加新客户
+     * @param customer
+     * @return
+     */
     @RequestMapping(value = "/new",method = RequestMethod.POST)
     @ResponseBody
     public String save(Customer customer) {
