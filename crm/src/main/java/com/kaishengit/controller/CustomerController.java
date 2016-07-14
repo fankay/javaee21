@@ -5,7 +5,9 @@ import com.kaishengit.dto.DataTablesResult;
 import com.kaishengit.exception.ForbiddenException;
 import com.kaishengit.exception.NotFoundException;
 import com.kaishengit.pojo.Customer;
+import com.kaishengit.pojo.User;
 import com.kaishengit.service.CustomerService;
+import com.kaishengit.service.UserService;
 import com.kaishengit.util.ShiroUtil;
 import com.kaishengit.util.Strings;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,8 @@ public class CustomerController {
 
     @Inject
     private CustomerService customerService;
+    @Inject
+    private UserService userService;
 
     @RequestMapping(method = RequestMethod.GET)
     public String list(Model model) {
@@ -96,10 +100,20 @@ public class CustomerController {
         if(customer == null) {
             throw new NotFoundException();
         }
-        if(customer.getUserid() != ShiroUtil.getCurrentUserID() && !ShiroUtil.isManager()) {
+        if(customer.getUserid() != null && !customer.getUserid().equals(ShiroUtil.getCurrentUserID()) && !ShiroUtil.isManager()) {
             throw new ForbiddenException();
         }
         model.addAttribute("customer",customer);
+
+        if(customer.getType().equals(Customer.CUSTOMER_TYPE_COMPANY)) {
+            List<Customer> customerList = customerService.findCustomerByCompanyId(id);
+            model.addAttribute("customerList",customerList);
+        }
+
+        //加载所有员工
+        List<User> userList = userService.finAllUser();
+        model.addAttribute("userList",userList);
+
         return "customer/view";
     }
 
@@ -133,6 +147,38 @@ public class CustomerController {
     public String edit(Customer customer) {
         customerService.editCustomer(customer);
         return "success";
+    }
+
+    /**
+     * 公开客户
+     */
+    @RequestMapping(value = "/open/{id:\\d+}",method = RequestMethod.GET)
+    public String openCustomer(@PathVariable Integer id) {
+        Customer customer = customerService.findCustomerById(id);
+        if(customer == null) {
+            throw new NotFoundException();
+        }
+        if(customer.getUserid() != null && !customer.getUserid().equals(ShiroUtil.getCurrentUserID()) && !ShiroUtil.isManager()) {
+            throw new ForbiddenException();
+        }
+        customerService.openCustomer(customer);
+        return "redirect:/customer/"+id;
+    }
+
+    /**
+     * 转移客户
+     */
+    @RequestMapping(value = "/move",method = RequestMethod.POST)
+    public String moveCust(Integer id,Integer userid) {
+        Customer customer = customerService.findCustomerById(id);
+        if(customer == null) {
+            throw new NotFoundException();
+        }
+        if(customer.getUserid() != null && !customer.getUserid().equals(ShiroUtil.getCurrentUserID()) && !ShiroUtil.isManager()) {
+            throw new ForbiddenException();
+        }
+        customerService.moveCust(customer,userid);
+        return "redirect:/customer";
     }
 
 }

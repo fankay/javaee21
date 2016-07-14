@@ -125,4 +125,32 @@ public class CustomerService {
         customer.setPinyin(Strings.toPinyiin(customer.getName()));
         customerMapper.update(customer);
     }
+
+    /**
+     * 根据公司ID查找所有的客户
+     * @param id
+     * @return
+     */
+    public List<Customer> findCustomerByCompanyId(Integer id) {
+        return customerMapper.findByCompanyId(id);
+    }
+
+    /**
+     * 将客户公开
+     * @param customer
+     */
+    public void openCustomer(Customer customer) {
+        customer.setUserid(null);
+        customerMapper.update(customer);
+    }
+
+    /**
+     * 转移客户
+     * @param customer
+     * @param userid
+     */
+    public void moveCust(Customer customer, Integer userid) {
+        customer.setUserid(userid);
+        customerMapper.update(customer);
+    }
 }
