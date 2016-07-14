@@ -112,6 +112,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="col-md-4">
                     <div class="box box-default">
                         <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-qrcode"></i> 电子名片</h3>
+                        </div>
+                        <div class="box-body" style="text-align: center">
+                            <img src="/customer/qrcode/${customer.id}.png" alt="">
+                        </div>
+                    </div>
+
+                    <div class="box box-default">
+                        <div class="box-header with-border">
                             <h3 class="box-title"><i class="fa fa-calendar-check-o"></i> 代办事项</h3>
                         </div>
                         <div class="box-body">
