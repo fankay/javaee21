@@ -2,8 +2,11 @@ package com.kaishengit.controller;
 
 import com.google.common.collect.Maps;
 import com.kaishengit.dto.DataTablesResult;
+import com.kaishengit.exception.ForbiddenException;
+import com.kaishengit.exception.NotFoundException;
 import com.kaishengit.pojo.Customer;
 import com.kaishengit.service.CustomerService;
+import com.kaishengit.util.ShiroUtil;
 import com.kaishengit.util.Strings;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,6 +55,10 @@ public class CustomerController {
 
     }
 
+    /**
+     * 显示所有公司信息
+     * @return
+     */
     @RequestMapping(value = "/company.json",method = RequestMethod.GET)
     @ResponseBody
     public List<Customer> showAllCompanyJson() {
@@ -77,6 +84,54 @@ public class CustomerController {
     @ResponseBody
     public String del(@PathVariable Integer id) {
         customerService.delCustomer(id);
+        return "success";
+    }
+
+    /**
+     * 显示客户信息
+     */
+    @RequestMapping(value = "/{id:\\d+}",method = RequestMethod.GET)
+    public String viewCustomer(@PathVariable Integer id,Model model) {
+        Customer customer = customerService.findCustomerById(id);
+        if(customer == null) {
+            throw new NotFoundException();
+        }
+        if(customer.getUserid() != ShiroUtil.getCurrentUserID() && !ShiroUtil.isManager()) {
+            throw new ForbiddenException();
+        }
+        model.addAttribute("customer",customer);
+        return "customer/view";
+    }
+
+
+    /**
+     * 编辑客户
+     */
+    @RequestMapping(value = "/edit/{id:\\d+}.json",method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String,Object> editCustomer(@PathVariable Integer id) {
+
+        Customer customer = customerService.findCustomerById(id);
+
+        Map<String,Object> result = Maps.newHashMap();
+
+
+        if(customer == null) {
+            result.put("state","error");
+            result.put("message","找不到对应的客户");
+        } else {
+            List<Customer> companyList = customerService.findAllCompany();
+            result.put("state","success");
+            result.put("customer",customer);
+            result.put("companyList",companyList);
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/edit",method = RequestMethod.POST)
+    @ResponseBody
+    public String edit(Customer customer) {
+        customerService.editCustomer(customer);
         return "success";
     }
 
