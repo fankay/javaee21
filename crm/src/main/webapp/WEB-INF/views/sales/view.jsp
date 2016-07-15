@@ -21,6 +21,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="/static/dist/css/AdminLTE.min.css">
     <link rel="stylesheet" href="/static/dist/css/skins/skin-blue.min.css">
     <link rel="stylesheet" href="/static/plugins/simditor/styles/simditor.css">
+    <link rel="stylesheet" href="/static/plugins/webuploader/webuploader.css">
     <style>
         .timeline>li>.timeline-item{
             box-shadow:none;
@@ -28,6 +29,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         }
         .files li{
             padding: 5px;
+        }
+        .webuploader-pick{
+            background-color: #ccc;
+            border: 1px solid #999;
         }
     </style>
 </head>
@@ -126,14 +131,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <div class="box-header with-border">
                             <h3 class="box-title"><i class="fa fa-file-o"></i> 相关资料</h3>
                             <div class="box-tools">
-                                <button class="btn btn-default btn-xs"><i class="fa fa-upload"></i></button>
+                                <div id="uploadBtn"><span class="text"><i class="fa fa-upload"></i></span></div>
                             </div>
                         </div>
                         <div class="box-body">
                             <ul class="list-unstyled files">
-                                <li><a href="#">第一版合同.pdf</a></li>
-                                <li><a href="#">材料预算.xls</a></li>
-                                <li><a href="">会议纪要.docx</a></li>
+                                <c:if test="${empty salesFileList}">
+                                    <li>暂无资料</li>
+                                </c:if>
+                                <c:forEach items="${salesFileList}" var="file">
+                                    <li><a href="">${file.name}</a></li>
+                                </c:forEach>
                             </ul>
                         </div>
                     </div>
@@ -224,6 +232,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="/static/plugins/simditor/scripts/hotkeys.min.js"></script>
 <script src="/static/plugins/simditor/scripts/uploader.min.js"></script>
 <script src="/static/plugins/simditor/scripts/simditor.min.js"></script>
+<script src="/static/plugins/webuploader/webuploader.min.js"></script>
 <script>
     $(function(){
         //相对时间
@@ -260,6 +269,34 @@ scratch. This page gets rid of all links and provides the needed markup only.
         });
         $("#saveProgressBtn").click(function(){
             $("#progressForm").submit();
+        });
+
+        //上传文件
+        var uploader = WebUploader.create({
+            swf:"/static/plugins/webuploader/Uploader.swf",
+            pick:"#uploadBtn",
+            server:"/sales/file/upload",
+            fileValL:"file",
+            formData:{"salesid":"${sales.id}"},
+            auto:true //选择文件后直接上传
+        });
+
+        //上传文件成功
+        uploader.on("startUpload",function(){
+            $("#uploadBtn .text").html('<i class="fa fa-spinner fa-spin"></i>');
+        });
+        uploader.on('uploadSuccess', function( file,data ) {
+            if(data._raw == "success") {
+                window.history.go(0);
+            }
+        });
+
+        uploader.on( 'uploadError', function( file ) {
+            alert("文件上传失败");
+        });
+
+        uploader.on( 'uploadComplete', function( file ) {
+            $("#uploadBtn .text").html('<i class="fa fa-upload"></i>').removeAttr("disabled");;
         });
     });
 </script>
