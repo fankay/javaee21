@@ -14,4 +14,6 @@ public interface SalesMapper {
     Long countByParam(Map<String, Object> params);
 
     List<Sales> findByCustId(Integer custId);
+
+    Sales findById(Integer id);
 }

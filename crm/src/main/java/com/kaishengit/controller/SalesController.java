@@ -2,9 +2,13 @@ package com.kaishengit.controller;
 
 import com.google.common.collect.Maps;
 import com.kaishengit.dto.DataTablesResult;
+import com.kaishengit.exception.ForbiddenException;
+import com.kaishengit.exception.NotFoundException;
 import com.kaishengit.pojo.Sales;
+import com.kaishengit.pojo.SalesLog;
 import com.kaishengit.service.CustomerService;
 import com.kaishengit.service.SalesService;
+import com.kaishengit.util.ShiroUtil;
 import com.kaishengit.util.Strings;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -75,7 +79,22 @@ public class SalesController {
 
 
     @RequestMapping(value = "/{id:\\d+}",method = RequestMethod.GET)
-    public String viewSales(@PathVariable Integer id) {
+    public String viewSales(@PathVariable Integer id,Model model) {
+        Sales sales = salesService.findSalesById(id);
+        if(sales == null) {
+            throw new NotFoundException();
+        }
+        if(!sales.getUserid().equals(ShiroUtil.getCurrentUserID()) && !ShiroUtil.isManager()) {
+            throw new ForbiddenException();
+        }
+
+        model.addAttribute("sales",sales);
+
+        //查找当前客户的跟进记录
+        List<SalesLog> salesLogList = salesService.findSalesLogBySalesId(id);
+        model.addAttribute(salesLogList);
+
+
         return "sales/view";
     }
 

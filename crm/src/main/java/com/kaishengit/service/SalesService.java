@@ -77,4 +77,22 @@ public class SalesService {
     public List<Sales> findSalesByCustId(Integer custId) {
         return salesMapper.findByCustId(custId);
     }
+
+    /**
+     * 根据ID查找销售机会
+     * @param id
+     * @return
+     */
+    public Sales findSalesById(Integer id) {
+        return salesMapper.findById(id);
+    }
+
+    /**
+     * 根据销售机会ID查找对应的跟进日志
+     * @param salesId
+     * @return
+     */
+    public List<SalesLog> findSalesLogBySalesId(Integer salesId) {
+        return salesLogMapper.findBySalesId(salesId);
+    }
 }

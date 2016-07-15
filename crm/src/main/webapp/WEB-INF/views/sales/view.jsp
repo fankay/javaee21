@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <!--
 This is a starter template page. Use this page to start your new project from
@@ -8,7 +10,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>凯盛CRM | 销售机会 | 名称</title>
+    <title>凯盛CRM | 销售机会 | ${sales.name}</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
@@ -43,7 +45,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <h1>　</h1>
             <ol class="breadcrumb">
                 <li><a href="/sales"><i class="fa fa-dashboard"></i> 机会列表</a></li>
-                <li class="active">机会名称</li>
+                <li class="active">${sales.name}</li>
             </ol>
         </section>
 
@@ -51,25 +53,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <section class="content">
             <div class="box box-primary">
                 <div class="box-header">
-                    <h3 class="box-title">购买SSD硬盘500块</h3>
-                    <div class="box-tools">
-                        <button class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> 删除</button>
-                    </div>
+                    <h3 class="box-title">${sales.name}</h3>
+                    <shiro:hasRole name="经理">
+                        <div class="box-tools">
+                            <button class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> 删除</button>
+                        </div>
+                    </shiro:hasRole>
                 </div>
                 <div class="box-body">
                     <table class="table">
                         <tbody>
                             <tr>
                                 <td style="width: 100px">关联客户</td>
-                                <td style="width: 200px"><a href="">Facebook</a></td>
+                                <td style="width: 200px"><a href="/customer/${sales.custid}" target="_blank">${sales.custname}</a></td>
                                 <td style="width: 100px">价值</td>
-                                <td style="width: 200px">￥40000</td>
+                                <td style="width: 200px">￥<fmt:formatNumber value="${sales.price}"/> </td>
                             </tr>
                             <tr>
                                 <td>当前进度</td>
-                                <td>初次接触 <a href="">修改</a></td>
+                                <td>${sales.progress} <a href="">修改</a></td>
                                 <td>最后跟进时间</td>
-                                <td>2016-07-15</td>
+                                <td>${empty sales.lasttime ? '无' : sales.lasttime}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -88,33 +92,25 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </div>
                         <div class="box-body">
                             <ul class="timeline">
-                                <li>
-                                    <i class="fa fa-commenting bg-aqua"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><i class="fa fa-clock-o"></i> 三分钟前</span>
-                                        <div class="timeline-body">
-                                            <p>给对方发送了电子合同，觉得报价有些高，让修改后再次发送。</p>
+                                <c:forEach items="${salesLogList}" var="log">
+                                    <li>
+                                        <c:choose>
+                                            <c:when test="${log.type == 'auto'}">
+                                                <i class="fa fa-history bg-yellow"></i>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <i class="fa fa-commenting bg-aqua"></i>
+                                            </c:otherwise>
+                                        </c:choose>
+
+                                        <div class="timeline-item">
+                                            <span class="time"><i class="fa fa-clock-o"></i> <span class="timeago" rel="${log.createtime}"></span></span>
+                                            <h3 class="timeline-header no-border">
+                                                ${log.context}
+                                            </h3>
                                         </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <i class="fa fa-history bg-yellow"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><i class="fa fa-clock-o"></i> 三分钟前</span>
-                                        <h3 class="timeline-header no-border">
-                                            将当前进度修改为：交易完成
-                                        </h3>
-                                    </div>
-                                </li>
-                                <li>
-                                    <i class="fa fa-history bg-yellow"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><i class="fa fa-clock-o"></i> 五小时前</span>
-                                        <h3 class="timeline-header no-border">
-                                            李若诗 创建了该机会
-                                        </h3>
-                                    </div>
-                                </li>
+                                    </li>
+                                </c:forEach>
                                 <li>
                                     <i class="fa fa-clock-o bg-gray"></i>
                                 </li>
@@ -169,10 +165,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="/static/bootstrap/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/static/dist/js/app.min.js"></script>
-
-<!-- Optionally, you can add Slimscroll and FastClick plugins.
-     Both of these plugins are recommended to enhance the
-     user experience. Slimscroll is required when using the
-     fixed layout. -->
+<script src="/static/plugins/moment/moment.min.js"></script>
+<script>
+    $(function(){
+        //相对时间
+        moment.locale('zh_cn');
+        $(".timeago").text(moment($(".timeago").attr('rel')).fromNow());
+    });
+</script>
 </body>
 </html>
