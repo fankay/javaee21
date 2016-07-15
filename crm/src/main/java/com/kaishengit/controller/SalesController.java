@@ -115,5 +115,14 @@ public class SalesController {
         return "redirect:/sales/"+salesLog.getSalesid();
     }
 
+    /**
+     * 修改机会的进度
+     */
+    @RequestMapping(value = "/progress/edit",method = RequestMethod.POST)
+    public String editProgress(Integer id,String progress) {
+        salesService.editSalesProgress(id,progress);
+        return "redirect:/sales/"+id;
+    }
+
 
 }

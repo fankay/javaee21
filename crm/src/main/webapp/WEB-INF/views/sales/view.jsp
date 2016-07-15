@@ -72,7 +72,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </tr>
                             <tr>
                                 <td>当前进度</td>
-                                <td>${sales.progress} <a href="">修改</a></td>
+                                <td>${sales.progress} <a href="javascript:;" id="editProgress">修改</a></td>
                                 <td>最后跟进时间</td>
                                 <td>${empty sales.lasttime ? '无' : sales.lasttime}</td>
                             </tr>
@@ -180,6 +180,36 @@ scratch. This page gets rid of all links and provides the needed markup only.
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div class="modal fade" id="progressModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改进度</h4>
+            </div>
+            <div class="modal-body">
+                <form id="progressForm" action="/sales/progress/edit" method="post">
+                    <input type="hidden" name="id" value="${sales.id}">
+                    <div class="form-group">
+                        <label>当前进度</label>
+                        <select name="progress" class="form-control">
+                            <option value="初次接触">初次接触</option>
+                            <option value="确认意向">确认意向</option>
+                            <option value="提供合同">提供合同</option>
+                            <option value="完成交易">完成交易</option>
+                            <option value="交易搁置">交易搁置</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="saveProgressBtn">保存</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <!-- REQUIRED JS SCRIPTS -->
 
 <!-- jQuery 2.2.0 -->
@@ -219,6 +249,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
             } else {
                 edit.focus();
             }
+        });
+
+        //修改当前进度
+        $("#editProgress").click(function(){
+            $("#progressModal").modal({
+                show:true,
+                backdrop:'static'
+            });
+        });
+        $("#saveProgressBtn").click(function(){
+            $("#progressForm").submit();
         });
     });
 </script>

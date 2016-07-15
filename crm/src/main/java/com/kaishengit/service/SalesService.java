@@ -8,6 +8,7 @@ import com.kaishengit.mapper.SalesMapper;
 import com.kaishengit.pojo.Sales;
 import com.kaishengit.pojo.SalesLog;
 import com.kaishengit.util.ShiroUtil;
+import org.joda.time.DateTime;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
@@ -100,8 +101,39 @@ public class SalesService {
      * 保存新的跟进日志
      * @param salesLog
      */
+    @Transactional
     public void saveLog(SalesLog salesLog) {
         salesLog.setType(SalesLog.LOG_TYPE_INPUT);
+        salesLogMapper.save(salesLog);
+
+        //修改机会的最后跟进时间
+        Sales sales = salesMapper.findById(salesLog.getSalesid());
+        sales.setLasttime(DateTime.now().toString("yyyy-MM-dd"));
+        salesMapper.update(sales);
+    }
+
+    /**
+     * 修改机会的进度
+     * @param id
+     * @param progress
+     */
+    @Transactional
+    public void editSalesProgress(Integer id, String progress) {
+        Sales sales = salesMapper.findById(id);
+        sales.setProgress(progress);
+        //修改最后跟进时间
+        sales.setLasttime(DateTime.now().toString("yyyy-MM-dd"));
+        //判断进度是否是『完成交易』
+        if("完成交易".equals(progress)) {
+            sales.setSuccesstime(DateTime.now().toString("yyyy-MM-dd"));
+        }
+        salesMapper.update(sales);
+
+        //添加跟进日志
+        SalesLog salesLog = new SalesLog();
+        salesLog.setType(SalesLog.LOG_TYPE_AUTO);
+        salesLog.setContext(ShiroUtil.getCurrentRealName() + " 更改进度为：" + progress);
+        salesLog.setSalesid(sales.getId());
         salesLogMapper.save(salesLog);
     }
 }

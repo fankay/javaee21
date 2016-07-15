@@ -8,6 +8,10 @@
         INSERT INTO t_sales( name, price, custid, custname, progress, lasttime, userid, username, successtime)
         VALUES (#{name},#{price},#{custid},#{custname},#{progress},#{lasttime},#{userid},#{username},#{successtime})
     </insert>
+    <update id="update">
+        UPDATE t_sales SET lasttime = #{lasttime},successtime=#{successtime},progress=#{progress}
+        where id = #{id}
+    </update>
 
     <select id="findByParam" resultType="Sales">
         SELECT * FROM t_sales
