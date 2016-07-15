@@ -57,5 +57,14 @@
     <select id="findByCompanyId" resultType="com.kaishengit.pojo.Customer">
         SELECT * FROM t_customer WHERE companyid = #{id}
     </select>
+    <select id="findAll" resultType="com.kaishengit.pojo.Customer">
+        SELECT * FROM t_customer
+        <where>
+            <if test="userId != null and userId != ''">
+                userid = #{userId}
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
 
 </mapper>

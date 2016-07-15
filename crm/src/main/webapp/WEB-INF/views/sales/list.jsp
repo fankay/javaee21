@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <!--
@@ -19,6 +20,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="/static/dist/css/AdminLTE.min.css">
     <link rel="stylesheet" href="/static/dist/css/skins/skin-blue.min.css">
     <link rel="stylesheet" href="/static/plugins/daterangepicker/daterangepicker-bs3.css">
+    <link rel="stylesheet" href="/static/plugins/datatables/css/dataTables.bootstrap.min.css">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -40,18 +42,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </div>
                 </div>
                 <div class="box-body">
-                    <form action="" class="form-inline">
-                        <input type="text" class="form-control" placeholder="机会名称">
-                        <select name="level" class="form-control" class="form-control">
+                    <form class="form-inline">
+                        <input type="hidden" id="search_start_time">
+                        <input type="hidden" id="search_end_time">
+                        <input type="text" class="form-control" id="search_name" placeholder="机会名称">
+                        <select class="form-control" class="form-control" id="search_progress">
                             <option value="">当前进度</option>
-                            <option value="">初次接触</option>
-                            <option value="">确认意向</option>
-                            <option value="">提供合同</option>
-                            <option value="">完成交易</option>
-                            <option value="">交易搁置</option>
+                            <option value="初次接触">初次接触</option>
+                            <option value="确认意向">确认意向</option>
+                            <option value="提供合同">提供合同</option>
+                            <option value="完成交易">完成交易</option>
+                            <option value="交易搁置">交易搁置</option>
                         </select>
                         <input type="text" id="rangepicker" class="form-control" placeholder="跟进时间">
-                        <button class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
+                        <button type="button" id="search_Btn" class="btn btn-default"><i class="fa fa-search"></i> 搜索</button>
                     </form>
                 </div>
             </div>
@@ -64,7 +68,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </div>
                 </div>
                 <div class="box-body">
-                    <table class="table">
+                    <table class="table" id="dataTable">
                         <thead>
                             <tr>
                                 <th>机会名称</th>
@@ -75,40 +79,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <th>所属员工</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td><a href="/sales/1">购买SSD硬盘500块</a></td>
-                                <td><a href="">FaceBook</a></td>
-                                <td>￥50000</td>
-                                <td>初次接触</td>
-                                <td>2016-07-15</td>
-                                <td>王若诗</td>
-                            </tr>
-                            <tr>
-                                <td><a href="">OLED显示器10台</a></td>
-                                <td><a href="">Google中国</a></td>
-                                <td>￥70000</td>
-                                <td><span class="label label-danger">交易搁置</span></td>
-                                <td>2016-06-12</td>
-                                <td>王若诗</td>
-                            </tr>
-                            <tr>
-                                <td><a href="">DELL塔式服务器10台</a></td>
-                                <td><a href="">Mark</a></td>
-                                <td>￥100000</td>
-                                <td>发送报价</td>
-                                <td>2016-07-12</td>
-                                <td>王若诗</td>
-                            </tr>
-                            <tr>
-                                <td><a href="">OLED显示器100台</a></td>
-                                <td><a href="">张丽茹</a></td>
-                                <td>￥700000</td>
-                                <td><span class="label label-success">完成交易</span></td>
-                                <td>2016-06-12</td>
-                                <td>王若诗</td>
-                            </tr>
-                        </tbody>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>
@@ -139,19 +110,20 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </div>
                     <div class="form-group">
                         <label>关联客户</label>
-                        <select name="level" class="form-control">
-                            <option value="">FaceBook</option>
-                            <option value="">Google中国</option>
+                        <select name="custid" class="form-control">
+                            <c:forEach items="${customerList}" var="cust">
+                            <option value="${cust.id}">${cust.name}</option>
+                            </c:forEach>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>当前进度</label>
-                        <select name="level" class="form-control">
-                            <option value="">初次接触</option>
-                            <option value="">确认意向</option>
-                            <option value="">提供合同</option>
-                            <option value="">完成交易</option>
-                            <option value="">交易搁置</option>
+                        <select name="progress" class="form-control">
+                            <option value="初次接触">初次接触</option>
+                            <option value="确认意向">确认意向</option>
+                            <option value="提供合同">提供合同</option>
+                            <option value="完成交易">完成交易</option>
+                            <option value="交易搁置">交易搁置</option>
                         </select>
                     </div>
                 </form>
@@ -173,9 +145,72 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="/static/dist/js/app.min.js"></script>
 <script src="/static/plugins/moment/moment.min.js"></script>
 <script src="/static/plugins/daterangepicker/daterangepicker.js"></script>
-
+<script src="/static/plugins/validate/jquery.validate.min.js"></script>
+<script src="/static/plugins/datatables/js/jquery.dataTables.min.js"></script>
+<script src="/static/plugins/datatables/js/dataTables.bootstrap.min.js"></script>
 <script>
     $(function(){
+
+        //DataTables
+        var dataTable = $("#dataTable").DataTable({
+            searching:false,
+            serverSide:true,
+            ajax:{
+                url:"/sales/load",
+                data:function(dataSouce){
+                    dataSouce.name = $("#search_name").val();
+                    dataSouce.progress = $("#search_progress").val();
+                    dataSouce.startdate = $("#search_start_time").val();
+                    dataSouce.enddate = $("#search_end_time").val();
+                }
+            },
+            columns:[
+                {"data":function(row){
+                    return "<a href='/sales/"+row.id+"'>"+row.name+"</a>";
+                }},
+                {"data":function(row){
+                    return "<a href='/customer/"+row.custid+"'>"+row.custname+"</a>";
+                }},
+                {"data":function(row){
+                    return "￥" + row.price;
+                }},
+                {"data":function(row) {
+                    if(row.progress == '完成交易') {
+                        return "<span class='label label-success'>"+row.progress+"</span>";
+                    }
+                    if(row.progress == '交易搁置') {
+                        return "<span class='label label-danger'>"+row.progress+"</span>";
+                    }
+                    return row.progress;
+                }},
+                {"data":"lasttime"},
+                {"data":"username"}
+            ],
+            ordering:false,
+            "autoWidth": false,
+            "language": { //定义中文
+                "search": "请输入书籍名称:",
+                "zeroRecords": "没有匹配的数据",
+                "lengthMenu": "显示 _MENU_ 条数据",
+                "info": "显示从 _START_ 到 _END_ 条数据 共 _TOTAL_ 条数据",
+                "infoFiltered": "(从 _MAX_ 条数据中过滤得来)",
+                "loadingRecords": "加载中...",
+                "processing": "处理中...",
+                "paginate": {
+                    "first": "首页",
+                    "last": "末页",
+                    "next": "下一页",
+                    "previous": "上一页"
+                }
+            }
+        });
+
+        //搜索
+        $("#search_Btn").click(function(){
+            dataTable.ajax.reload();
+        });
+
+
 
         //daterangepicker
         $("#rangepicker").daterangepicker({
@@ -223,18 +258,53 @@ scratch. This page gets rid of all links and provides the needed markup only.
             }
         });
         $('#rangepicker').on('apply.daterangepicker', function(ev, picker) {
-            console.log(picker.startDate.format('YYYY-MM-DD'));
-            console.log(picker.endDate.format('YYYY-MM-DD'));
+            $("#search_start_time").val(picker.startDate.format('YYYY-MM-DD'));
+            $("#search_end_time").val(picker.endDate.format('YYYY-MM-DD'));
+            //console.log(picker.startDate.format('YYYY-MM-DD'));
+            //console.log(picker.endDate.format('YYYY-MM-DD'));
         });
 
-
+        //新增机会
+        $("#newForm").validate({
+            errorClass:"text-danger",
+            errorElement:"span",
+            rules:{
+                name:{
+                    required:true
+                },
+                price:{
+                    required:true,
+                    number:true
+                }
+            },
+            messages:{
+                name:{
+                    required:"请输入机会名称"
+                },
+                price:{
+                    required:"请输入价值",
+                    number:"数字格式错误"
+                }
+            },
+            submitHandler:function(form){
+                $.post("/sales/new",$(form).serialize()).done(function(data){
+                    if(data == "success") {
+                        $("#newModal").modal('hide');
+                    }
+                }).fail(function(){
+                    alert("服务器异常");
+                });
+            }
+        });
         $("#newBtn").click(function(){
-
+            $("#newForm")[0].reset();
             $("#newModal").modal({
                 show:true,
                 backdrop:'static'
             });
-
+        });
+        $("#saveBtn").click(function(){
+            $("#newForm").submit();
         });
 
     });
