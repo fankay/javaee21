@@ -52,5 +52,8 @@
             </if>
         </where>
     </select>
+    <select id="findByCustId" resultType="com.kaishengit.pojo.Sales">
+        SELECT * FROM t_sales WHERE custid = #{custId} order by id desc
+    </select>
 
 </mapper>
