@@ -140,7 +140,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                     <li>暂无资料</li>
                                 </c:if>
                                 <c:forEach items="${salesFileList}" var="file">
-                                    <li><a href="">${file.name}</a></li>
+                                    <li><a href="/sales/file/${file.id}/download">${file.name}</a></li>
                                 </c:forEach>
                             </ul>
                         </div>

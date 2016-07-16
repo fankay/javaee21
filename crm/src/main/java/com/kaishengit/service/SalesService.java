@@ -190,4 +190,13 @@ public class SalesService {
         salesFileMapper.save(salesFile);
 
     }
+
+    /**
+     * 根据主键获取文件
+     * @param id
+     * @return
+     */
+    public SalesFile findSalesFileById(Integer id) {
+        return salesFileMapper.findById(id);
+    }
 }
