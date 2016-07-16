@@ -12,6 +12,9 @@
         UPDATE t_sales SET lasttime = #{lasttime},successtime=#{successtime},progress=#{progress}
         where id = #{id}
     </update>
+    <delete id="del">
+        DELETE FROM t_sales WHERE id = #{id}
+    </delete>
 
     <select id="findByParam" resultType="Sales">
         SELECT * FROM t_sales

@@ -62,7 +62,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <h3 class="box-title">${sales.name}</h3>
                     <shiro:hasRole name="经理">
                         <div class="box-tools">
-                            <button class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> 删除</button>
+                            <button id="delBtn" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> 删除</button>
                         </div>
                     </shiro:hasRole>
                 </div>
@@ -298,6 +298,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
         uploader.on( 'uploadComplete', function( file ) {
             $("#uploadBtn .text").html('<i class="fa fa-upload"></i>').removeAttr("disabled");;
         });
+
+        <shiro:hasRole name="经理">
+        //删除销售机会
+        $("#delBtn").click(function(){
+            if(confirm("确定要删除该销售机会吗")) {
+                window.location.href = "/sales/del/${sales.id}";
+            }
+        });
+        </shiro:hasRole>
+
     });
 </script>
 </body>

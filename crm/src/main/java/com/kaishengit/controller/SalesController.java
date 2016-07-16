@@ -178,5 +178,14 @@ public class SalesController {
                 .body(new InputStreamResource(inputStream));
     }
 
+    /**
+     * 删除销售机会
+     * @return
+     */
+    @RequestMapping(value = "/del/{id:\\d+}",method = RequestMethod.GET)
+    public String delSales(@PathVariable Integer id) {
+        salesService.delSales(id);
+        return "redirect:/sales";
+    }
 
 }

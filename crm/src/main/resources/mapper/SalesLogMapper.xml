@@ -8,6 +8,13 @@
         INSERT INTO t_sales_log(context,type, salesid)
         VALUES (#{context},#{type},#{salesid})
     </insert>
+    <delete id="del">
+        DELETE FROM t_sales_log WHERE  id IN (
+        <foreach collection="list" item="log" separator=",">
+            #{log.id}
+        </foreach>
+        )
+    </delete>
 
     <select id="findBySalesId" resultType="SalesLog">
         SELECT * FROM t_sales_log WHERE salesid = #{salesId} order by id desc

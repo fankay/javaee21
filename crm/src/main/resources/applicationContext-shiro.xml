@@ -20,6 +20,7 @@
                 /admin/** = roles[管理员]
                 /notice/new = roles[经理]
                 /customer/del/** = roles[经理]
+                /sales/del/** = roles[经理]
                 /** = authc
             </value>
         </property>

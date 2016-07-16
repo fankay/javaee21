@@ -8,4 +8,6 @@ public interface SalesLogMapper {
     void save(SalesLog salesLog);
 
     List<SalesLog> findBySalesId(Integer salesId);
+
+    void del(List<SalesLog> salesLogList);
 }

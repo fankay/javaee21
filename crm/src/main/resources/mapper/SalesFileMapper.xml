@@ -3,6 +3,13 @@
 <mapper namespace="com.kaishengit.mapper.SalesFileMapper">
 
     <cache/>
+    <delete id="del">
+        DELETE FROM t_sales_file WHERE id in(
+        <foreach collection="list" separator="," item="file">
+            #{file.id}
+        </foreach>
+        )
+    </delete>
 
     <select id="findBySalesId" resultType="SalesFile">
         SELECT * FROM t_sales_file WHERE salesid = #{salesId} order by id desc

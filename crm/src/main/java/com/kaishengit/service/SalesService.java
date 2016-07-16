@@ -199,4 +199,28 @@ public class SalesService {
     public SalesFile findSalesFileById(Integer id) {
         return salesFileMapper.findById(id);
     }
+
+    /**
+     * 根据主键删除销售机会
+     * @param id
+     */
+    @Transactional
+    public void delSales(Integer id) {
+        Sales sales = salesMapper.findById(id);
+        if(sales != null) {
+            //删除对应的文件
+            List<SalesFile> salesFileList = salesFileMapper.findBySalesId(id);
+            if(!salesFileList.isEmpty()) {
+                salesFileMapper.del(salesFileList);
+            }
+            //删除对应的跟进
+            List<SalesLog> salesLogList = salesLogMapper.findBySalesId(id);
+            if(!salesLogList.isEmpty()) {
+                salesLogMapper.del(salesLogList);
+            }
+
+            //删除自己
+            salesMapper.del(id);
+        }
+    }
 }
