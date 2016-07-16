@@ -4,6 +4,7 @@ package com.kaishengit.controller;
 import com.kaishengit.pojo.Task;
 import com.kaishengit.service.TaskService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,14 +21,16 @@ public class TackController {
     private TaskService taskService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String list() {
+    public String list(Model model) {
+        List<Task> timeoutTaskList = taskService.findTimeOutTasks();
+        model.addAttribute("timeoutTaskList",timeoutTaskList);
         return "task/list";
     }
 
     @RequestMapping(value = "/load",method = RequestMethod.GET)
     @ResponseBody
-    public List<Task> load() {
-        return taskService.findTaskByUserId();
+    public List<Task> load(String start,String end) {
+        return taskService.findTaskByUserId(start,end);
     }
 
     /**

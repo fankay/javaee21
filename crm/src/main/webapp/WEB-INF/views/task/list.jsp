@@ -49,73 +49,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="box box-primary">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">我的待办事项</h3>
-                            <div class="box-tools">
-                                <button class="btn btn-success btn-xs" id="newBtn"><i class="fa fa-plus"></i> 新增</button>
-                            </div>
-                        </div>
-                        <div class="box-body">
-                            <ul class="todo-list">
-                                <li>
-                                    <input type="checkbox">
-                                    <span class="text">给李忠打电话联系业务</span>
-                                    <div class="tools">
-                                        <i class="fa fa-edit"></i>
-                                        <i class="fa fa-trash-o"></i>
-                                    </div>
-                                </li>
-                                <li>
-                                    <input type="checkbox">
-                                    <span class="text">Make the theme responsive </span>
-                                    <div class="tools">
-                                        <i class="fa fa-edit"></i>
-                                        <i class="fa fa-trash-o"></i>
-                                    </div>
-                                </li>
-                                <li>
-                                    <input type="checkbox">
-                                    <span class="text">Check your messages and notifications</span>
-                                    <div class="tools">
-                                        <i class="fa fa-edit"></i>
-                                        <i class="fa fa-trash-o"></i>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
                     <div class="box box-danger">
                         <div class="box-header with-border">
                             <h3 class="box-title">已经延期的事项</h3>
                         </div>
                         <div class="box-body">
                             <ul class="todo-list">
-                                <li>
-                                    <input type="checkbox">
-                                    <span class="text">给李忠打电话联系业务</span>
-                                    <div class="tools">
-                                        <i class="fa fa-edit"></i>
-                                        <i class="fa fa-trash-o"></i>
-                                    </div>
-                                </li>
-                                <li>
-                                    <input type="checkbox">
-                                    <span class="text">Make the theme responsive </span>
-                                    <div class="tools">
-                                        <i class="fa fa-edit"></i>
-                                        <i class="fa fa-trash-o"></i>
-                                    </div>
-                                </li>
-                                <li>
-                                    <input type="checkbox">
-                                    <span class="text">Check your messages and notifications</span>
-                                    <div class="tools">
-                                        <i class="fa fa-edit"></i>
-                                        <i class="fa fa-trash-o"></i>
-                                    </div>
-                                </li>
+                                <c:forEach items="${timeoutTaskList}" var="task">
+                                    <li>
+                                        <input type="checkbox">
+                                        <span class="text">${task.title}</span>
+                                        <div class="tools">
+                                            <i class="fa fa-trash-o"></i>
+                                        </div>
+                                    </li>
+                                </c:forEach>
                             </ul>
                         </div>
                     </div>
@@ -246,6 +194,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 //alert('Event: ' + calEvent.title);
                 //alert("Start:" + calEvent.start);
                 //alert("End:" + calEvent.end);
+                alert(calEvent.id);
             },
             buttonText:{
                 today:"今天"
@@ -260,28 +209,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
             format: 'yyyy-mm-dd',
             autoclose:true,
             language:'zh-CN',
-            startDate:moment().format("YYYY-MM-DD"),
             todayHighlight:true
         });
 
-        $("#newBtn").click(function(){
-            $("#newForm")[0].reset();
-             $("#start_time").val(moment().format("YYYY-MM-DD"));
-             $("#end_time").val(moment().format("YYYY-MM-DD"));
-
-             $("#newModal").modal({
-                 show:true,
-                 backdrop:'static'
-             });
-            /**/
-
-
-        });
-
         $("#saveBtn").click(function(){
-            //$("#newForm").submit();
             if(!$("#task_title").val()) {
                 $("#task_title").focus();
+                return;
+            }
+            if(moment($("#start_time").val()).isAfter(moment($("#end_time").val()))) {
+                alert("结束时间必须大于开始时间");
+                return;
             }
             $.post("/task/new",$("#newForm").serialize()).done(function(data){
                 if(data == "success") {

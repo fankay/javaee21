@@ -10,7 +10,13 @@
     </insert>
 
     <select id="findByUserId" resultType="Task">
-        SELECT * FROM t_task WHERE userid = #{userId}
+        SELECT * FROM t_task WHERE userid = #{userId} and done = 0
+    </select>
+    <select id="findTimeOutTask" resultType="com.kaishengit.pojo.Task">
+        SELECT * FROM t_task WHERE userid = #{userId} and date(`end`) &lt; #{today} and done = 0
+    </select>
+    <select id="findByUserIdAndDateRanger" resultType="com.kaishengit.pojo.Task">
+        SELECT * FROM t_task WHERE userid = #{userId} and done = 0 and date(start) >= #{start} and date(`end`) &lt;= #{end}
     </select>
 
 </mapper>

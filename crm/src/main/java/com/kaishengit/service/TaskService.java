@@ -4,6 +4,7 @@ import com.kaishengit.mapper.TaskMapper;
 import com.kaishengit.pojo.Task;
 import com.kaishengit.util.ShiroUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +41,16 @@ public class TaskService {
      * 获取当前用户的所有任务
      * @return
      */
-    public List<Task> findTaskByUserId() {
-        return taskMapper.findByUserId(ShiroUtil.getCurrentUserID());
+    public List<Task> findTaskByUserId(String start,String end) {
+        return taskMapper.findByUserIdAndDateRanger(ShiroUtil.getCurrentUserID(),start,end);
+    }
+
+    /**
+     * 获取当前用户已经超时的任务
+     * @return
+     */
+    public List<Task> findTimeOutTasks() {
+        String today = DateTime.now().toString("yyyy-MM-dd");
+        return taskMapper.findTimeOutTask(ShiroUtil.getCurrentUserID(),today);
     }
 }

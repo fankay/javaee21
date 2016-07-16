@@ -13,6 +13,7 @@ public class Task implements Serializable {
     private String end;
     private String color;
     private String remindertime;
+    private Boolean done;
 
     public Integer getId() {
         return id;
@@ -84,5 +85,13 @@ public class Task implements Serializable {
 
     public void setRemindertime(String remindertime) {
         this.remindertime = remindertime;
+    }
+
+    public Boolean getDone() {
+        return done;
+    }
+
+    public void setDone(Boolean done) {
+        this.done = done;
     }
 }
