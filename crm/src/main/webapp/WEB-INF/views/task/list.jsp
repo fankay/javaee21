@@ -141,7 +141,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <form id="newForm" action="/task/new" method="post">
                     <div class="form-group">
                         <label>待办内容</label>
-                        <input type="text" class="form-control" name="title">
+                        <input type="text" class="form-control" name="title" id="task_title">
                     </div>
                     <div class="form-group">
                         <label>开始日期</label>
@@ -227,50 +227,83 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="/static/plugins/fullcalendar/fullcalendar.min.js"></script>
 <script src="/static/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
 <script>
-    //新增
-    $("#color").colorpicker({
-        color:'#61a5e8'
-    });
-    $("#start_time,#end_time").datepicker({
-        format: 'yyyy-mm-dd',
-        autoclose:true,
-        language:'zh-CN',
-        startDate:moment().format("YYYY-MM-DD"),
-        todayHighlight:true
-    });
+    $(function(){
+        //日历
+        var $calendar = $("#calendar");
+        $calendar.fullCalendar({
+            lang: 'zh-cn',
+            dayClick: function(date, jsEvent, view) {
+                $("#newForm")[0].reset();
+                $("#start_time").val(date.format());
+                $("#end_time").val(date.format());
 
-    $("#newBtn").click(function(){
-        $("#newForm")[0].reset();
-        $("#start_time").val(moment().format("YYYY-MM-DD"));
-        $("#end_time").val(moment().format("YYYY-MM-DD"));
-
-        $("#newModal").modal({
-            show:true,
-            backdrop:'static'
+                $("#newModal").modal({
+                    show:true,
+                    backdrop:'static'
+                });
+            },
+            eventClick: function(calEvent, jsEvent, view) {
+                //alert('Event: ' + calEvent.title);
+                //alert("Start:" + calEvent.start);
+                //alert("End:" + calEvent.end);
+            },
+            buttonText:{
+                today:"今天"
+            },
+            events: "/task/load"
         });
+        //新增
+        $("#color").colorpicker({
+            color:'#61a5e8'
+        });
+        $("#start_time,#end_time").datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose:true,
+            language:'zh-CN',
+            startDate:moment().format("YYYY-MM-DD"),
+            todayHighlight:true
+        });
+
+        $("#newBtn").click(function(){
+            $("#newForm")[0].reset();
+             $("#start_time").val(moment().format("YYYY-MM-DD"));
+             $("#end_time").val(moment().format("YYYY-MM-DD"));
+
+             $("#newModal").modal({
+                 show:true,
+                 backdrop:'static'
+             });
+            /**/
+
+
+        });
+
+        $("#saveBtn").click(function(){
+            //$("#newForm").submit();
+            if(!$("#task_title").val()) {
+                $("#task_title").focus();
+            }
+            $.post("/task/new",$("#newForm").serialize()).done(function(data){
+                if(data == "success") {
+                    var myEvent = {
+                        title:$("#task_title").val(),
+                        start: $("#start_time").val(),
+                        end: $("#end_time").val(),
+                        color:$("#color").val()
+                    };
+                    $calendar.fullCalendar( 'renderEvent', myEvent );
+
+                    $("#newModal").modal('hide');
+                }
+            }).fail(function(){
+                alert("服务器异常");
+            });
+        });
+
+
+
     });
 
-    $("#saveBtn").click(function(){
-
-        $("#newForm").submit();
-    });
-
-
-    $("#calendar").fullCalendar({
-        lang: 'zh-cn',
-        dayClick: function(date, jsEvent, view) {
-            alert('Clicked on: ' + date.format());
-        },
-        eventClick: function(calEvent, jsEvent, view) {
-            //alert('Event: ' + calEvent.title);
-            //alert("Start:" + calEvent.start);
-            //alert("End:" + calEvent.end);
-        },
-        buttonText:{
-            today:"今天"
-        },
-        events: "/task/load"
-    });
 </script>
 </body>
 </html>

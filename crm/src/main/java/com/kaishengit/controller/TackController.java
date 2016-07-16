@@ -36,9 +36,10 @@ public class TackController {
      * @return
      */
     @RequestMapping(value = "/new",method = RequestMethod.POST)
+    @ResponseBody
     public String save(Task task,String hour,String min) {
         taskService.saveTask(task,hour,min);
-        return "redirect:/task";
+        return "success";
     }
 
 }
