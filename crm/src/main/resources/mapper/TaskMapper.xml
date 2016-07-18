@@ -4,10 +4,16 @@
 
     <cache/>
 
-    <insert id="save">
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_task(title, start, `end`, color, remindertime, custid, salesid, userid)
         VALUES (#{title},#{start},#{end},#{color},#{remindertime},#{custid},#{salesid},#{userid})
     </insert>
+    <update id="update">
+        UPDATE t_task SET done = #{done},color=#{color} where id = #{id}
+    </update>
+    <delete id="del">
+        DELETE FROM t_task WHERE id = #{id}
+    </delete>
 
     <select id="findByUserId" resultType="Task">
         SELECT * FROM t_task WHERE userid = #{userId} and done = 0
@@ -16,7 +22,10 @@
         SELECT * FROM t_task WHERE userid = #{userId} and date(`end`) &lt; #{today} and done = 0
     </select>
     <select id="findByUserIdAndDateRanger" resultType="com.kaishengit.pojo.Task">
-        SELECT * FROM t_task WHERE userid = #{userId} and done = 0 and date(start) >= #{start} and date(`end`) &lt;= #{end}
+        SELECT * FROM t_task WHERE userid = #{userId} and date(start) >= #{start} and date(`end`) &lt;= #{end}
+    </select>
+    <select id="findById" resultType="com.kaishengit.pojo.Task">
+        select * from t_task WHERE id = #{id};
     </select>
 
 </mapper>

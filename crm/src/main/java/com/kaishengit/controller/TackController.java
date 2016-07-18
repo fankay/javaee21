@@ -1,10 +1,12 @@
 package com.kaishengit.controller;
 
 
+import com.kaishengit.dto.JSONResult;
 import com.kaishengit.pojo.Task;
 import com.kaishengit.service.TaskService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,9 +42,31 @@ public class TackController {
      */
     @RequestMapping(value = "/new",method = RequestMethod.POST)
     @ResponseBody
-    public String save(Task task,String hour,String min) {
+    public JSONResult save(Task task, String hour, String min) {
         taskService.saveTask(task,hour,min);
+        return new JSONResult(task);
+    }
+
+    /**
+     * 删除日程
+     * @return
+     */
+    @RequestMapping(value = "/del/{id:\\d+}",method = RequestMethod.GET)
+    @ResponseBody
+    public String delTask(@PathVariable Integer id) {
+        taskService.delTask(id);
         return "success";
+    }
+
+    /**
+     * 将日程设置为已完成
+     * @return
+     */
+    @RequestMapping(value = "/{id:\\d+}/done",method = RequestMethod.POST)
+    @ResponseBody
+    public JSONResult doneTask(@PathVariable Integer id) {
+        Task task = taskService.doneTask(id);
+        return new JSONResult(task);
     }
 
 }

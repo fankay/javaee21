@@ -290,6 +290,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 $.post("/sales/new",$(form).serialize()).done(function(data){
                     if(data == "success") {
                         $("#newModal").modal('hide');
+                        dataTable.ajax.reload();
                     }
                 }).fail(function(){
                     alert("服务器异常");

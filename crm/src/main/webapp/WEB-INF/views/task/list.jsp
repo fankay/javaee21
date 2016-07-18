@@ -9,7 +9,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>凯盛CRM | 代办事项</title>
+    <title>凯盛CRM | 待办事项</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
@@ -161,6 +161,40 @@ scratch. This page gets rid of all links and provides the needed markup only.
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+
+<div class="modal fade" id="eventModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">查看待办事项</h4>
+            </div>
+            <div class="modal-body">
+                <form id="eventForm">
+                    <input type="hidden" id="event_id">
+                    <div class="form-group">
+                        <label>待办内容</label>
+                        <div id="event_title"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>开始日期 ~ 结束时间</label>
+                        <div><span id="event_start"></span>  ~  <span id="event_end"></span></div>
+                    </div>
+                    <div class="form-group">
+                        <label>提醒时间</label>
+                        <div id="event_remindtime"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-danger" id="delBtn"><i class="fa fa-trash"></i> 删除</button>
+                <button type="button" class="btn btn-primary" id="doneBtn"><i class="fa fa-check"></i> 标记为已完成</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <!-- REQUIRED JS SCRIPTS -->
 
 <!-- jQuery 2.2.0 -->
@@ -177,10 +211,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script>
     $(function(){
         //日历
+        var _event = null;
         var $calendar = $("#calendar");
+
         $calendar.fullCalendar({
-            lang: 'zh-cn',
+            lang:'zh-CN',
+            buttonText:{
+                today:    '今天'
+            },
+            events:"/task/load",
             dayClick: function(date, jsEvent, view) {
+                //alert('Clicked on: ' + date.format());
                 $("#newForm")[0].reset();
                 $("#start_time").val(date.format());
                 $("#end_time").val(date.format());
@@ -190,17 +231,29 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     backdrop:'static'
                 });
             },
-            eventClick: function(calEvent, jsEvent, view) {
-                //alert('Event: ' + calEvent.title);
-                //alert("Start:" + calEvent.start);
-                //alert("End:" + calEvent.end);
-                alert(calEvent.id);
-            },
-            buttonText:{
-                today:"今天"
-            },
-            events: "/task/load"
+            eventClick:function(calEvent, jsEvent, view){
+                //alert(calEvent.id + " : " + calEvent.title);
+                _event = calEvent;
+                $("#event_id").val(calEvent.id);
+                $("#event_title").text(calEvent.title);
+                $("#event_start").text(moment(calEvent.start).format("YYYY-MM-DD"));
+                $("#event_end").text(moment(calEvent.end).format("YYYY-MM-DD"));
+                if(calEvent.remindertime) {
+                    $("#event_remindtime").text(calEvent.remindertime);
+                } else {
+                    $("#event_remindtime").text('无');
+                }
+
+                $("#eventModal").modal({
+                    show:true,
+                    backdrop:'static'
+                });
+            }
         });
+
+
+
+
         //新增
         $("#color").colorpicker({
             color:'#61a5e8'
@@ -221,16 +274,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 alert("结束时间必须大于开始时间");
                 return;
             }
-            $.post("/task/new",$("#newForm").serialize()).done(function(data){
-                if(data == "success") {
-                    var myEvent = {
-                        title:$("#task_title").val(),
-                        start: $("#start_time").val(),
-                        end: $("#end_time").val(),
-                        color:$("#color").val()
-                    };
-                    $calendar.fullCalendar( 'renderEvent', myEvent );
-
+            $.post("/task/new",$("#newForm").serialize()).done(function(result){
+                if(result.state == "success") {
+                    //将返回的日程，渲染到日历控件上
+                    $calendar.fullCalendar( 'renderEvent', result.data );
                     $("#newModal").modal('hide');
                 }
             }).fail(function(){
@@ -238,6 +285,37 @@ scratch. This page gets rid of all links and provides the needed markup only.
             });
         });
 
+        //删除日程
+        $("#delBtn").click(function(){
+            var id = $("#event_id").val();
+
+            if(confirm("确定要删除吗")) {
+                $.get("/task/del/"+id).done(function(data){
+                    if("success" == data) {
+                        $calendar.fullCalendar('removeEvents',id);
+                        $("#eventModal").modal('hide');
+                    }
+                }).fail(function(){
+                    alert("服务器异常");
+                });
+            }
+
+
+        });
+
+        //将日程标记为已完成
+        $("#doneBtn").click(function(){
+            var id = $("#event_id").val();
+            $.post("/task/"+id+"/done").done(function(result){
+                if(result.state == "success") {
+                    _event.color = "#cccccc";
+                    $calendar.fullCalendar('updateEvent',_event);
+                    $("#eventModal").modal('hide');
+                }
+            }).fail(function(){
+                alert("服务器异常");
+            });
+        });
 
 
     });

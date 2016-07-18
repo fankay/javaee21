@@ -13,4 +13,10 @@ public interface TaskMapper {
     List<Task> findTimeOutTask(@Param("userId") Integer userID,@Param("today") String today);
 
     List<Task> findByUserIdAndDateRanger(@Param("userId") Integer currentUserID,@Param("start") String start,@Param("end") String end);
+
+    void del(Integer id);
+
+    Task findById(Integer id);
+
+    void update(Task task);
 }

@@ -28,7 +28,7 @@ public class TaskService {
      */
     public void saveTask(Task task, String hour, String min) {
         if(StringUtils.isNotEmpty(hour) && StringUtils.isNotEmpty(min)) {
-            String reminderTime = task.getStart() + " "+hour + ":" + min;
+            String reminderTime = task.getStart() + " "+hour + ":" + min + ":00";
             logger.debug("提醒时间为{}" , reminderTime);
             //TODO Quartz动态任务
             task.setRemindertime(reminderTime);
@@ -52,5 +52,25 @@ public class TaskService {
     public List<Task> findTimeOutTasks() {
         String today = DateTime.now().toString("yyyy-MM-dd");
         return taskMapper.findTimeOutTask(ShiroUtil.getCurrentUserID(),today);
+    }
+
+    /**
+     * 删除日程
+     * @param id
+     */
+    public void delTask(Integer id) {
+        taskMapper.del(id);
+    }
+
+    /**
+     * 将日程设置为已完成
+     * @param id
+     */
+    public Task doneTask(Integer id) {
+        Task task = taskMapper.findById(id);
+        task.setDone(true);
+        task.setColor("#cccccc");
+        taskMapper.update(task);
+        return task;
     }
 }
