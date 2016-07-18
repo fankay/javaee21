@@ -66,5 +66,9 @@
         </where>
         ORDER BY id DESC
     </select>
+    <select id="findNewCustomerCount" resultType="java.lang.Long">
+        SELECT count(*) FROM t_customer
+        where DATE(createtime) >= #{start} and date(createtime) &lt;= #{end}
+    </select>
 
 </mapper>
