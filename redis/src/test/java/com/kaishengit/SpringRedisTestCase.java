@@ -28,8 +28,8 @@ public class SpringRedisTestCase {
 
     @Test
     public void testIncr() {
-        //redisTemplate.opsForValue().increment("post:4:viewnum",1L);
-        //System.out.println(redisTemplate.opsForValue().get("post:4:viewnum"));
+        redisTemplate.opsForValue().increment("post:4:viewnum",1L);
+        System.out.println(redisTemplate.opsForValue().get("post:4:viewnum"));
     }
 
 
