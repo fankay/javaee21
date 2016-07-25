@@ -1,0 +1,19 @@
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.kaishengit.pojo">
+
+    <!--实体类Pojo 和 Table对应关系-->
+
+    <class name="User" table="t_user">
+        <id name="id" column="id">
+            <!--主键生成策略：native表示自动增长-->
+            <generator class="native"/>
+        </id>
+        <!--name属性和column属性相同时，column属性可以省略-->
+        <property name="username" column="username"/>
+        <property name="password"/>
+    </class>
+
+
+</hibernate-mapping>
