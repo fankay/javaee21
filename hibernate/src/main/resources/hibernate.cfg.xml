@@ -26,12 +26,21 @@
         <property name="show_sql">true</property>
         <property name="current_session_context_class">thread</property>
 
+        <!--二级缓存-->
+        <property name="cache.use_second_level_cache">true</property>
+        <property name="cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</property>
+
         <!--添加映射文件-->
         <mapping resource="hbm/User.hbm.xml"/>
         <mapping resource="hbm/Dept.hbm.xml"/>
         <mapping resource="hbm/Employee.hbm.xml"/>
         <mapping resource="hbm/Card.hbm.xml"/>
         <mapping resource="hbm/Person.hbm.xml"/>
+        <mapping resource="hbm/Topic.hbm.xml"/>
+        <mapping resource="hbm/TopicContent.hbm.xml"/>
+        <mapping resource="hbm/Student.hbm.xml"/>
+        <mapping resource="hbm/Teacher.hbm.xml"/>
+        <mapping resource="hbm/Task.hbm.xml"/>
 
 
     </session-factory>

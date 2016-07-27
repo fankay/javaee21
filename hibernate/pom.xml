@@ -26,6 +26,11 @@
       <artifactId>hibernate-core</artifactId>
       <version>4.3.0.Final</version>
     </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-ehcache</artifactId>
+      <version>4.3.0.Final</version>
+    </dependency>
 
     <!--C3P0 数据库连接池-->
     <dependency>
