@@ -30,17 +30,20 @@
         <property name="cache.use_second_level_cache">true</property>
         <property name="cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</property>
 
+        <!--事务隔离级别-->
+        <!--<property name="connection.isolation">4</property>-->
+
         <!--添加映射文件-->
-        <mapping resource="hbm/User.hbm.xml"/>
-        <mapping resource="hbm/Dept.hbm.xml"/>
-        <mapping resource="hbm/Employee.hbm.xml"/>
-        <mapping resource="hbm/Card.hbm.xml"/>
-        <mapping resource="hbm/Person.hbm.xml"/>
-        <mapping resource="hbm/Topic.hbm.xml"/>
-        <mapping resource="hbm/TopicContent.hbm.xml"/>
-        <mapping resource="hbm/Student.hbm.xml"/>
-        <mapping resource="hbm/Teacher.hbm.xml"/>
-        <mapping resource="hbm/Task.hbm.xml"/>
+        <mapping class="com.kaishengit.pojo.User"/>
+        <mapping class="com.kaishengit.pojo.Dept"/>
+        <mapping class="com.kaishengit.pojo.Employee"/>
+        <mapping class="com.kaishengit.pojo.Student"/>
+        <mapping class="com.kaishengit.pojo.Teacher"/>
+        <mapping class="com.kaishengit.pojo.Topic"/>
+        <mapping class="com.kaishengit.pojo.TopicContent"/>
+        <mapping class="com.kaishengit.pojo.Person"/>
+        <mapping class="com.kaishengit.pojo.Card"/>
+        <mapping class="com.kaishengit.pojo.Task"/>
 
 
     </session-factory>

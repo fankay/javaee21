@@ -27,7 +27,7 @@ public class OneToManyTestCase {
         session.beginTransaction();
 
         Dept dept = new Dept();
-        dept.setDeptname("C#开发部");
+        dept.setDeptname("C++开发部");
 
         Employee employee1 = new Employee();
         employee1.setEmpname("找刘");
@@ -56,7 +56,7 @@ public class OneToManyTestCase {
         Session session = HibernateUtil.getSession();
         session.beginTransaction();
 
-        Dept dept = (Dept) session.get(Dept.class,11);
+        Dept dept = (Dept) session.get(Dept.class,15);
         //System.out.println(dept);
         System.out.println(dept.getDeptname());
 

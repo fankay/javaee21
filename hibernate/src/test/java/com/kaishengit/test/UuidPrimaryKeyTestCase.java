@@ -3,6 +3,7 @@ package com.kaishengit.test;
 import com.kaishengit.pojo.Task;
 import com.kaishengit.util.HibernateUtil;
 import org.hibernate.Cache;
+import org.hibernate.LockOptions;
 import org.hibernate.Session;
 import org.junit.Test;
 
@@ -17,12 +18,56 @@ public class UuidPrimaryKeyTestCase {
         session.beginTransaction();
 
         Task task = new Task();
-        task.setTitle("x-1");
+        task.setTitle("x-100");
 
         session.save(task);
 
         session.getTransaction().commit();
     }
+
+    @Test
+    public void testUpdate() throws InterruptedException {
+        Session session = HibernateUtil.getSession();
+        session.beginTransaction();
+
+        Task task = (Task) session.get(Task.class,"8a8082e4562b6de001562b6de5260000");
+        task.setTitle("x-103");
+
+        Thread.sleep(10000);
+
+
+        session.getTransaction().commit();
+    }
+
+
+    @Test
+    public void testUpdate2() throws InterruptedException {
+        Session session = HibernateUtil.getSession();
+        session.beginTransaction();
+
+        Task task = (Task) session.get(Task.class,"8a8082e4562b6de001562b6de5260000", LockOptions.UPGRADE);
+        task.setTitle("x-108");
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Session session2 = HibernateUtil.getSession();
+                session2.beginTransaction();
+                Task task1 = (Task) session2.get(Task.class,"8a8082e4562b6de001562b6de5260000");
+                task1.setTitle("VV-100");
+                session2.getTransaction().commit();
+            }
+        });
+
+        thread.start();
+
+        Thread.sleep(5000);
+
+        session.getTransaction().commit();
+    }
+
+
+
 
     @Test
     public void testFindById() {

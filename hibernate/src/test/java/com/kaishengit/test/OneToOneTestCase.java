@@ -37,7 +37,7 @@ public class OneToOneTestCase {
         Session session = HibernateUtil.getSession();
         session.beginTransaction();
 
-        Person person = (Person) session.get(Person.class,9);
+        Person person = (Person) session.get(Person.class,10);
         System.out.println(person.getName());
         System.out.println(person.getCard().getCardname());
 

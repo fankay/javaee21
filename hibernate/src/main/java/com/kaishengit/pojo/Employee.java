@@ -1,9 +1,18 @@
 package com.kaishengit.pojo;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "t_employee")
 public class Employee {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String empname;
+
+    @ManyToOne//(fetch = FetchType.LAZY)
+    @JoinColumn(name = "deptid")
     private Dept dept;
 
     public Integer getId() {

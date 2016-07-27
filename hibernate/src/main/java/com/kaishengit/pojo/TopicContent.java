@@ -1,7 +1,13 @@
 package com.kaishengit.pojo;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "t_topic_content")
 public class TopicContent {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String content;
 

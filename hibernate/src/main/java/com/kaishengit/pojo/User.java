@@ -1,7 +1,22 @@
 package com.kaishengit.pojo;
 
-public class User {
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.GenerationType;
+import java.io.Serializable;
+
+@Entity
+@Table(name = "t_user")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class User implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String username;
     private String password;

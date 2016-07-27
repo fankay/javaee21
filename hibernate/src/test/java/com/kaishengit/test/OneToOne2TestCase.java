@@ -16,7 +16,7 @@ public class OneToOne2TestCase {
         Topic topic = (Topic) session.get(Topic.class,1);
         System.out.println(topic.getTitle());
 
-        //topic.getTopicContent().getContent();
+        System.out.println(topic.getTopicContent().getContent());;
         //Hibernate.initialize(topic.getTopicContent());
 
         session.getTransaction().commit();
