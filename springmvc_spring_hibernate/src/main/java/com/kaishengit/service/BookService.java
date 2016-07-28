@@ -6,6 +6,8 @@ import com.kaishengit.dao.PublisherDao;
 import com.kaishengit.pojo.Book;
 import com.kaishengit.pojo.BookType;
 import com.kaishengit.pojo.Publisher;
+import com.kaishengit.util.Page;
+import com.kaishengit.util.SearchParam;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
@@ -40,10 +42,14 @@ public class BookService {
     }
 
     public void delBook(Integer id) {
-        bookDao.del(id);
+        bookDao.delete(id);
     }
 
     public Book findBookById(Integer id) {
         return bookDao.findById(id);
+    }
+
+    public Page<Book> findByPage(Integer pageNo, List<SearchParam> searchParamList) {
+        return bookDao.findByPageNo(pageNo,5,searchParamList);
     }
 }

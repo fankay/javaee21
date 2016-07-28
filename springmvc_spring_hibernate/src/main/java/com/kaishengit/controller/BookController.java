@@ -4,14 +4,18 @@ import com.kaishengit.pojo.Book;
 import com.kaishengit.pojo.BookType;
 import com.kaishengit.pojo.Publisher;
 import com.kaishengit.service.BookService;
+import com.kaishengit.util.Page;
+import com.kaishengit.util.SearchParam;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -22,9 +26,15 @@ public class BookController {
     private BookService bookService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String home(Model model) {
-        List<Book> bookList = bookService.findAllBook();
-        model.addAttribute("bookList",bookList);
+    public String home(@RequestParam(name = "p",required = false,defaultValue = "1") Integer pageNo,
+                       Model model,
+                       HttpServletRequest request) {
+        //List<Book> bookList = bookService.findAllBook();
+
+        List<SearchParam> searchParamList = SearchParam.buiderSearchParam(request);
+
+        Page<Book> page = bookService.findByPage(pageNo,searchParamList);
+        model.addAttribute("page",page);
         return "book/list";
     }
 
