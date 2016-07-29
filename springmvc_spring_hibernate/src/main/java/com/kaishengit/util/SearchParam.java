@@ -46,27 +46,47 @@ public class SearchParam {
 
         while(enumeration.hasMoreElements()) {
             String queryString = enumeration.nextElement();
-            String value = request.getParameter(queryString);
-            if(queryString.startsWith("q_") && StringUtils.isNotEmpty(value)) {
-                // q_like_xxx
-                String[] array = queryString.split("_");
-                if(array.length != 3) {
+            Object value = request.getParameter(queryString);
+            if(queryString.startsWith("q_") && value != null && StringUtils.isNotEmpty(value.toString())) {
+                // q_f_le_bookprice
+                String[] array = queryString.split("_",4);
+                if(array.length != 4) {
                     throw new RuntimeException("地址栏查询字符串格式错误:" + queryString);
                 }
-                String type = array[1];
-                String propertyName = array[2];
+                String type = array[2];
+                String propertyName = array[3];
+                String valueType = array[1];
 
                 SearchParam searchParam = new SearchParam();
                 searchParam.setProtertyName(propertyName);
-                searchParam.setValue(Strings.toUTF8(value));
+                value = converterType(value,valueType);
+                searchParam.setValue(value);
                 searchParam.setType(type);
 
                 searchParamList.add(searchParam);
+
+                //
+                request.setAttribute(queryString,value);
             }
         }
 
 
         return searchParamList;
+    }
+
+    private static Object converterType(Object value, String valueType) {
+        if("s".equalsIgnoreCase(valueType)) {
+            return Strings.toUTF8(value.toString());
+        } else if("d".equalsIgnoreCase(valueType)) {
+            return Double.valueOf(value.toString());
+        } else if("f".equalsIgnoreCase(valueType)) {
+            return Float.valueOf(value.toString());
+        } else if("b".equalsIgnoreCase(valueType)) {
+            return Boolean.valueOf(value.toString());
+        } else if("i".equalsIgnoreCase(valueType)) {
+            return Integer.valueOf(value.toString());
+        }
+        return null;
     }
 
 
