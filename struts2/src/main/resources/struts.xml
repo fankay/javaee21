@@ -7,62 +7,68 @@
     <!--修改default.properties文件默认值-->
     <constant name="struts.action.extension" value="do"/>
 
-    <package name="myPackage" extends="struts-default">
-        <!--
-            name : url中请求的名字
-            class : Action类的完全限定名
-        -->
-        <action name="home" class="com.kaishengit.action.HomeAction">
-            <!--
-                name : Action中方法的返回值,如果是success，则可以省略不写
-            -->
-            <result name="success">/WEB-INF/views/home.jsp</result>
-        </action>
-    </package>
-
-    <package name="userPackage" namespace="/user" extends="struts-default">
-
+    <!--
+        abstract : true 表示该package中不能配置action节点
+        该package提供了其他package需要的公共配置，主要用来被其他的package所继承
+    -->
+    <package name="basePackage" extends="struts-default" abstract="true">
         <interceptors>
-            <interceptor name="myTimer" class="com.kaishengit.action.interceptor.MyTimerInterceptor"/>
-
+            <interceptor name="login" class="com.kaishengit.action.interceptor.LoginInterceptor"/>
             <interceptor-stack name="myStack">
                 <interceptor-ref name="defaultStack"/>
-                <interceptor-ref name="myTimer"/>
+                <interceptor-ref name="login"/>
             </interceptor-stack>
         </interceptors>
 
         <default-interceptor-ref name="myStack"/>
 
+        <global-results>
+            <result name="login" type="redirectAction">
+                <param name="actionName">index</param>
+                <param name="namespace">/</param>
+                <param name="code">10002</param>
+            </result>
+        </global-results>
+    </package>
 
-        <!--<interceptors>
-            <interceptor-stack name="myInterceptorStack">
-                <interceptor-ref name="defaultStack"/>
-                <interceptor-ref name="timer"/>
-            </interceptor-stack>
-        </interceptors>
 
-        <default-interceptor-ref name="myInterceptorStack"/>-->
 
-        <action name="new" class="com.kaishengit.action.UserAction" method="toSave">
-            <result>/WEB-INF/views/users/save.jsp</result>
+    <package name="homePackage" extends="basePackage">
+
+        <action name="index" class="com.kaishengit.action.HomeAction" method="toLogin">
+            <result>/WEB-INF/views/login.jsp</result>
         </action>
 
-        <action name="save" class="com.kaishengit.action.UserAction" method="save">
-            <result name="success" type="redirectAction">
+        <action name="login" class="com.kaishengit.action.HomeAction" method="login">
+            <result type="redirectAction">
                 <param name="actionName">list</param>
                 <param name="namespace">/user</param>
             </result>
+            <result name="input" type="redirectAction">
+                <param name="actionName">index</param>
+                <param name="code">${code}</param>
+            </result>
         </action>
-
-        <action name="list" class="com.kaishengit.action.UserAction" method="list">
-            <result name="success">/WEB-INF/views/users/list.jsp</result>
-        </action>
-
-
-
-
     </package>
 
+
+    <package name="userPackage" namespace="/user" extends="basePackage">
+        <action name="list" class="com.kaishengit.action.UserAction" method="list">
+            <result>/WEB-INF/views/user/list.jsp</result>
+        </action>
+
+        <action name="new" class="com.kaishengit.action.UserAction" method="toSave">
+            <result>/WEB-INF/views/user/save.jsp</result>
+        </action>
+    </package>
+
+    <package name="bookPackage" namespace="/book" extends="basePackage">
+
+        <action name="list" class="com.kaishengit.action.BookAction" method="list">
+            <result>/WEB-INF/views/book/list.jsp</result>
+        </action>
+
+    </package>
 
 
 

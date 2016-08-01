@@ -8,10 +8,6 @@
 </head>
 <body>
     <h3>User List</h3>
-    <ul>
-        <c:forEach items="${names}" var="name">
-        <li>${name}</li>
-        </c:forEach>
-    </ul>
+
 </body>
 </html>
