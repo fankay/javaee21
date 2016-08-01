@@ -14,7 +14,7 @@
         -->
         <action name="home" class="com.kaishengit.action.HomeAction">
             <!--
-                name : Action中方法的返回值
+                name : Action中方法的返回值,如果是success，则可以省略不写
             -->
             <result name="success">/WEB-INF/views/home.jsp</result>
         </action>
@@ -22,8 +22,29 @@
 
     <package name="userPackage" namespace="/user" extends="struts-default">
 
+        <interceptors>
+            <interceptor name="myTimer" class="com.kaishengit.action.interceptor.MyTimerInterceptor"/>
+
+            <interceptor-stack name="myStack">
+                <interceptor-ref name="defaultStack"/>
+                <interceptor-ref name="myTimer"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="myStack"/>
+
+
+        <!--<interceptors>
+            <interceptor-stack name="myInterceptorStack">
+                <interceptor-ref name="defaultStack"/>
+                <interceptor-ref name="timer"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="myInterceptorStack"/>-->
+
         <action name="new" class="com.kaishengit.action.UserAction" method="toSave">
-            <result name="success" type="dispatcher">/WEB-INF/views/users/save.jsp</result>
+            <result>/WEB-INF/views/users/save.jsp</result>
         </action>
 
         <action name="save" class="com.kaishengit.action.UserAction" method="save">
@@ -36,6 +57,8 @@
         <action name="list" class="com.kaishengit.action.UserAction" method="list">
             <result name="success">/WEB-INF/views/users/list.jsp</result>
         </action>
+
+
 
 
     </package>
