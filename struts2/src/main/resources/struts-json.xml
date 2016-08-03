@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+    <package name="myJsonPackage" namespace="/api" extends="json-default">
+
+        <!--
+            默认是将当前执行的Action类转换成了JSON对象
+        -->
+        <action name="json" class="com.kaishengit.action.JSONAction">
+            <result type="json">
+                <param name="root">user</param>
+                <param name="excludeNullProperties">true</param>
+                <!--GZIP压缩-->
+                <param name="enableGZIP">true</param>
+                <param name="noCache">true</param>
+            </result>
+        </action>
+
+    </package>
+
+
+
+</struts>

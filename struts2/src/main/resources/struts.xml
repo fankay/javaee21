@@ -7,6 +7,9 @@
     <!--修改default.properties文件默认值-->
     <constant name="struts.action.extension" value="do"/>
 
+    <include file="struts-fileupload.xml"/>
+    <include file="struts-json.xml"/>
+
     <!--
         abstract : true 表示该package中不能配置action节点
         该package提供了其他package需要的公共配置，主要用来被其他的package所继承
