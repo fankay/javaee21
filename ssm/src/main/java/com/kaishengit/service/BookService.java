@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 @Named
-@Transactional
 public class BookService {
 
     @Inject
@@ -25,10 +24,12 @@ public class BookService {
     @Inject
     private PublisherMapper publisherMapper;
 
+    @Transactional(readOnly = true)
     public List<BookType> findAllBookType() {
         return bookTypeMapper.findAll();
     }
 
+    @Transactional(readOnly = true)
     public List<Publisher> findAllPublisher() {
         return publisherMapper.findAll();
     }
@@ -54,6 +55,7 @@ public class BookService {
     }
 
 
+    @Transactional(readOnly = true)
     public Page<Book> findBookPage(Integer p,Map<String,Object> param) {
         int totalSize = bookMapper.countByParam(param).intValue();
 
