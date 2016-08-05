@@ -45,6 +45,17 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+    <!--Alibaba Druid数据源监控-->
+    <servlet>
+        <servlet-name>druid</servlet-name>
+        <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>druid</servlet-name>
+        <url-pattern>/druid/*</url-pattern>
+    </servlet-mapping>
+
+
     <!--加载Spring容器-->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
