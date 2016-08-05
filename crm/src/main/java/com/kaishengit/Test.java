@@ -1,40 +1,36 @@
 package com.kaishengit;
 
+import org.quartz.*;
+import org.quartz.impl.StdScheduler;
+import org.quartz.impl.StdSchedulerFactory;
 
-import com.google.common.collect.Maps;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.oned.MultiFormatOneDReader;
-import net.sourceforge.pinyin4j.PinyinHelper;
-import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
-import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
-import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
-import net.sourceforge.pinyin4j.format.HanyuPinyinVCharType;
-import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
-
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Hashtable;
-import java.util.Map;
+import java.util.Date;
+import java.util.Timer;
 
 public class Test {
 
-    public static void main(String[] args) throws BadHanyuPinyinOutputFormatCombination, WriterException, IOException {
+    public static void main(String[] args) throws SchedulerException {
 
-        String mecard = "MECARD:N:樊凯;ORG:凯盛软件;TEL:15138041672;EMAIL:fankai@kaishengit.com;ADR:中国;;";
-
-        Hashtable hints = new Hashtable();
-        hints.put(EncodeHintType.CHARACTER_SET,"UTF-8");
-
-        BitMatrix bitMatrix = new MultiFormatWriter().encode(mecard, BarcodeFormat.QR_CODE,400,400,hints);
+        /*Timer timer = new Timer();
+        timer.schedule(new MyTimerTask(),0,5000);*/
 
 
-        MatrixToImageWriter.writeToStream(bitMatrix,"png",new FileOutputStream("D:/qr.png"));
+        //任务
+        JobDetail jobDetail = JobBuilder.newJob(MyQuartzJob.class).build();
+
+        //创建触发器
+        /*SimpleScheduleBuilder scheduleBuilder = SimpleScheduleBuilder.simpleSchedule();
+        scheduleBuilder.withIntervalInSeconds(5);
+        scheduleBuilder.repeatForever();*/
+        ScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule("1 35 14 5 8 ? 2016-2016");
+        Trigger trigger = TriggerBuilder.newTrigger().withSchedule(scheduleBuilder).build();
+
+        //创建调度器
+        Scheduler scheduler = new StdSchedulerFactory().getScheduler();
+        scheduler.scheduleJob(jobDetail,trigger);
+        scheduler.start();
+
+
 
 
     }
