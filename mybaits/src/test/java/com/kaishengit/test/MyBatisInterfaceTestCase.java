@@ -94,16 +94,10 @@ public class MyBatisInterfaceTestCase {
     public void testFindById() {
         SqlSession sqlSession = MyBatisUtil.getSqlSession();
 
-        //getMapper()方法使用了【动态代理模式】-> 自动产生一个接口的实现类
         UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
 
         User user = userMapper.findById(10);
         logger.debug("{}",user);
-
-        List<Tag> tagList = user.getTagList();
-        for(Tag tag : tagList) {
-            logger.debug("Tag: {}",tag);
-        }
 
         sqlSession.close();
         Assert.assertNotNull(user);

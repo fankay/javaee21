@@ -233,7 +233,6 @@ public class CustomerController {
      * @return
      */
     @RequestMapping(value = "/task/new",method = RequestMethod.POST)
-    @ResponseBody
     public String newTask(Task task,String hour,String min) {
         taskService.saveTask(task,hour,min);
         return "redirect:/customer/"+task.getCustid();

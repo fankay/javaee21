@@ -31,14 +31,8 @@ public class MyBatisTestCase {
             //根据SqlSessionFactory对象创建SqlSession对象
             SqlSession sqlSession = sessionFactory.openSession();
 
-            //CRUD
-            //str: namespace+id
             User user = sqlSession.selectOne("com.kaishengit.mapper.UserMapper.findById",10);
-
             logger.debug("{}",user);
-
-
-
             //释放资源
             sqlSession.close();
 

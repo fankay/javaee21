@@ -4,17 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kaishengit.mapper.TopicMapper">
 
-    <select id="findById" parameterType="int"
-            resultType="com.kaishengit.pojo.Topic" resultMap="topicMap">
+    <select id="findById" parameterType="int" resultType="Topic" resultMap="topicMap">
         SELECT t_topic.*,t_user.username,t_user.avatar,t_node.nodename FROM t_topic
         INNER join t_user on t_topic.userid = t_user.id
         INNER join t_node on t_topic.nodeid = t_node.id
         WHERE  t_topic.id = #{id}
-        <!--SELECT t_topic.*,t_user.username as 'user.username',t_user.avatar as 'user.avatar',t_node.nodename as 'node.nodename'
-        FROM t_topic
-        INNER join t_user on t_topic.userid = t_user.id
-        INNER join t_node on t_topic.nodeid = t_node.id
-        WHERE  t_topic.id = #{id}-->
     </select>
 
     <resultMap id="topicMap" type="com.kaishengit.pojo.Topic">

@@ -4,6 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kaishengit.mapper.UserMapper">
 
+    <select id="findById" parameterType="int" resultType="User">
+        SELECT * FROM t_user WHERE id = #{id}
+    </select>
 
 
 
@@ -25,7 +28,6 @@
             <if test="username != null and username != ''">
                 username = #{username}
             </if>
-
             <choose>
                 <when test="password != null and password != ''">
                     and password = #{password}
@@ -33,23 +35,12 @@
                 <when test="email != null and email != ''">
                     and email = #{email}
                 </when>
-                <!--<otherwise>
-                    and 1 = 1
-                </otherwise>-->
             </choose>
-
-            <!--<if test="password != null and password != ''">
-                and password = #{password}
-            </if>
-            <if test="email != null and email != ''">
-                and email = #{email}
-            </if>-->
         </trim>
     </select>
 
     <select id="findByParams" resultType="User">
         SELECT * FROM t_user WHERE username = #{username} and password = #{pwd}
-       <!-- SELECT * FROM t_user WHERE username = #{param1} and password = #{param2}-->
     </select>
 
 
@@ -69,9 +60,8 @@
         parameterType: 方法传入参数的类型
         resultType：方法的返回类型(需要写pojo的完全限定名=包名+类名)
     -->
-    <select id="findById" parameterType="int" resultType="com.kaishengit.pojo.User" resultMap="userMap">
-        SELECT t_user.id, username, password, email, avatar, createtime, loginip, logintime, state,
-        t_tag.tagname,t_tag.id as 'tagid'
+    <select id="findById" parameterType="int" resultType="User" resultMap="userMap">
+        SELECT t_user.*,t_tag.tagname,t_tag.id as 'tagid'
         FROM t_user
         INNER JOIN t_tag ON t_user.id = t_tag.userid
         WHERE t_user.id = #{id}

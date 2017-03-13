@@ -4,13 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kaishengit.mapper.NodeMapper">
 
-    <cache/>
-    <!--<cache size="2048" readOnly="false" eviction="FIFO" flushInterval="60000"/>-->
+    <!--<cache/>-->
+    <cache size="2048" readOnly="false" eviction="FIFO" flushInterval="60000"/>
 
     <!--
         flushCache:false 执行后不刷新缓存
     -->
-    <insert id="batchSave" parameterType="list" flushCache="false">
+    <insert id="batchSave" parameterType="list">
         INSERT  INTO t_node(nodename) VALUES
         <foreach collection="list" item="node" separator=",">
             (#{node.nodename})
